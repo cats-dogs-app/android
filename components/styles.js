@@ -4,17 +4,27 @@ export default StyleSheet.create({
     
   darkGrayBackground: { backgroundColor: '#666666' },
   grayBackground: { backgroundColor: '#dadada' },
+  greenBackground: { backgroundColor: '#00b738' },
   whiteBackground: { backgroundColor: '#FFF' },
 
   darkGray: { color: '#666666' },
   gray: { color: '#dadada' },
   green: { color: '#00b738' },
+  black: { color: '#000' },
+  white: { color: '#fff' },
 
   button: {
     backgroundColor: '#00b738',
-    marginLeft: 24,
-    marginRight: 24,
-    marginTop: 12
+    marginLeft: 16,
+    marginRight: 16,
+    marginTop: 8
+  },
+
+  disabledButton: {
+    backgroundColor: '#dadada',
+    marginLeft: 30,
+    marginRight: 30,
+    marginTop: 8
   },
   
   marginedContent: {
@@ -40,6 +50,16 @@ export default StyleSheet.create({
   input: {
     color: '#666666',
     fontSize: 18
+  },
+
+  roundButton: {
+    borderWidth:1,
+    borderColor: '#fff',
+    alignItems:'center',
+    justifyContent:'center',
+    width:100,
+    height:100,
+    borderRadius:50,
   }
 
 });

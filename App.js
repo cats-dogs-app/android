@@ -5,13 +5,14 @@ import { createStackNavigator } from 'react-navigation-stack';
 import { Provider } from 'react-redux';
 import { applyMiddleware, createStore } from 'redux';
 import thunk from 'redux-thunk';
-import { LoginPage, RegisterPage, WaitingPage } from './components/pages';
+import { LoginPage, RegisterPage, WaitingPage, FeedSelectionPage } from './components/pages';
 import reducers from './redux/reducers';
 
 export const AppStack = createStackNavigator(
   {
     Login: { screen: LoginPage },
     Register: { screen: RegisterPage },
+    FeedSelection: { screen: FeedSelectionPage },
   },
   {
     initialRouteName: 'Login'

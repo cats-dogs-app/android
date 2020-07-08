@@ -6,8 +6,9 @@ const user = (state = initialState, action) => {
   switch (action.type) {
     case LOGIN_SUCCESS: {
       let copyState = { ...state };
-      copyState.content = { ...action.payload.content };
+      // copyState.content = { ...action.payload.content };
       copyState.loggedIn = true;
+      copyState.isLoading = false;
       return copyState;
     }
     case LOGOUT_SUCCESS: {

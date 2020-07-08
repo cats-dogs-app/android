@@ -7,6 +7,13 @@ export const noLogin = ({ apikey }) => dispatch => {
 
 export const loginRequest = ({ username, password }) => dispatch => {
   dispatch(requestStarted());
+  if(username=="a") {
+    dispatch(loginSuccess({}));
+    dispatch(navigateTo({ page: 'FeedSelection' }));
+  }
+  else {
+    dispatch(requestFailure("ERROR"));
+  }
 };
 
 export const logoutRequest = () => dispatch => {
@@ -23,6 +30,7 @@ export const navigateTo = ({ page, id }) => (dispatch, getState) => {
   let nav = getState().nav;
   switch (page) {
     default: {
+      console.log(nav);
       nav.navigate(page);
     }
   }

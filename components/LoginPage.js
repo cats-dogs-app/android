@@ -11,7 +11,7 @@ class LoginPage extends Component {
     super(props);
     this.state = {};
     if (!this.props.nav) this.props.loadNavigation(this.props.navigation);
-    if (this.props.user.loggedIn) this.props.navigateTo({ page: 'SONRAKI SAYFA' });
+    if (this.props.user.loggedIn) this.props.navigateTo({ page: 'FeedSelection' });
   }
 
   renderLogin = () => 
@@ -39,10 +39,10 @@ class LoginPage extends Component {
           </Item>
         </Form>
         <Content style={styles.marginedTop12}>
-          <Button style={styles.button} block onPress={() => this.props.loginRequest({ username: this.state.username, password: this.state.password })}>
+          <Button rounded style={styles.button} block onPress={() => this.props.loginRequest({ username: this.state.username, password: this.state.password })}>
             <Text>Login</Text>
           </Button>
-          <Button style={styles.button} block onPress={() => this.props.navigateTo({ page: 'Register' })}>
+          <Button rounded style={styles.button} block onPress={() => this.props.navigateTo({ page: 'Register' })}>
             <Text>Don't have an acoount? Register instead</Text>
           </Button>
         </Content>

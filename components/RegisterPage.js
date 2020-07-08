@@ -45,10 +45,10 @@ class RegisterPage extends Component {
         </Item>
         </Form>
         <Content style={styles.marginedTop12}>
-          <Button style={styles.button} block onPress={() => this.props.registerRequest({ username: this.state.username, password: this.state.password, email: this.state.email })}>
+          <Button rounded style={styles.button} block onPress={() => this.props.registerRequest({ username: this.state.username, password: this.state.password, email: this.state.email })}>
             <Text>Register</Text>
           </Button>
-          <Button style={styles.button} block onPress={() => this.props.navigateTo({ page: 'Login' })}>
+          <Button rounded style={styles.button} block onPress={() => this.props.navigateTo({ page: 'Login' })}>
             <Text>Have an account? Login instead</Text>
           </Button>
         </Content>
