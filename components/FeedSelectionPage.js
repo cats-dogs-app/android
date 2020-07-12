@@ -92,8 +92,8 @@ class FeedSelectionPage extends Component {
         </Swiper>
 
           <View>
-            <Button rounded block style={styles.button}>
-              <Text>Değişim Grafiği</Text>
+            <Button rounded block style={styles.button} onPress={() => this.props.navigateTo({page: 'FeedChart'})}>
+              <Text>DEĞİŞİM GRAFİĞİ</Text>
             </Button>
             <Button disabled rounded block style={styles.disabledButton}>
               <Text style={styles.black}>Grafiği görebilmek için 7 günlük veri girilmelidir.</Text>
