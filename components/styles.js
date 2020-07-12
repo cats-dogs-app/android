@@ -57,8 +57,8 @@ export default StyleSheet.create({
     borderColor: '#fff',
     alignItems:'center',
     justifyContent:'center',
-    width:100,
-    height:100,
+    width:80,
+    height:80,
     borderRadius:50,
   }
 

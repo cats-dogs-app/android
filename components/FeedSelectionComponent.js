@@ -54,11 +54,11 @@ class FeedSelectionComponent extends Component {
 			
 	render() {
 		return (
-			<Grid>
-				<Col style={{justifyContent: 'center', flex: 1}}>
-					<View style={{ borderRadius: 25, overflow: 'hidden'}}>
+			<Grid style={{padding: 4}}>
+				<Col style={{ marginLeft: 30, justifyContent: 'center', flex: 1}}>
+					<View style={{ width:140, borderRadius: 25, overflow: 'hidden'}}>
 						<Picker
-							style={[styles.greenBackground, styles.white]}
+							style={[{height:30}, styles.greenBackground, styles.white]}
 							mode="dropdown"
 							selectedValue={this.state.selectedFeed}
 							onValueChange={this.onValueChange.bind(this)}
