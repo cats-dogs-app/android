@@ -1,16 +1,16 @@
 import { Button, Container, Content, Form, Input, Item, Text } from 'native-base';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { navigateTo, registerRequest } from '../redux/actions';
+import { registerRequest } from '../redux/actions';
 import styles from './styles';
 import WaitingPage from './WaitingPage';
+import { withRouter } from "react-router";
 
 class RegisterPage extends Component {
 
   constructor(props) {
     super(props);
     this.state = {};
-    if (this.props.user.loggedIn) this.props.navigateTo({ page: 'Forms' });
   }
   
   renderRegister = () => 
@@ -48,7 +48,7 @@ class RegisterPage extends Component {
           <Button rounded style={styles.button} block onPress={() => this.props.registerRequest({ username: this.state.username, password: this.state.password, email: this.state.email })}>
             <Text>Register</Text>
           </Button>
-          <Button rounded style={styles.button} block onPress={() => this.props.navigateTo({ page: 'Login' })}>
+          <Button rounded style={styles.button} block onPress={() => this.props.history.push('/login')}>
             <Text>Have an account? Login instead</Text>
           </Button>
         </Content>
@@ -56,6 +56,8 @@ class RegisterPage extends Component {
     </Container>
     
   render() {
+    if (this.props.user.loggedIn) this.props.history.push('/feed');
+
     if (this.props.user.isLoading) return <WaitingPage />
     else return this.renderRegister()
   }
@@ -69,8 +71,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     registerRequest: credentials => { dispatch(registerRequest(credentials)) },
-    navigateTo: content => { dispatch(navigateTo(content)) }
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(RegisterPage);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(RegisterPage));

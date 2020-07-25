@@ -13,50 +13,24 @@ class LoginPage extends Component {
     this.state = {};
   }
 
-  renderLogin = () => (
+  renderLogin = () => 
     <Container style={styles.whiteBackground}>
       <Content style={styles.marginedContent}>
-        <Content style={styles.inputItem}>
-          {this.props.user.error && <Text style={styles.red20Text}>Failed to login, please check your inputs.</Text>}
-          {!this.props.user.error && <Text style={styles.whitest20Text}>Login please.</Text>}
-        </Content>
-        <Form style={styles.marginedTop12}>
-          <Item style={styles.marginedContent2}>
-            <Input style={styles.input}
-              placeholderTextColor='#CCCAAF'
-              placeholder='Username'
-              value={this.state.username}
-              onChangeText={(username) => this.setState({ username })} />
-          </Item>
-          <Item style={styles.marginedContent2}>
-            <Input style={styles.input}
-              placeholderTextColor='#CCCAAF'
-              placeholder='Password'
-              secureTextEntry={true}
-              value={this.state.password}
-              onChangeText={(password) => this.setState({ password })} />
-          </Item>
-        </Form>
         <Content style={styles.marginedTop12}>
-          <Button rounded style={styles.button} block onPress={() => this.props.loginRequest({ username: this.state.username, password: this.state.password })}>
+        <Button rounded style={styles.button} block onPress={() => this.props.history.push("/login")}>
             <Text>Login</Text>
           </Button>
           <Button rounded style={styles.button} block onPress={() => this.props.history.push("/register")}>
-            <Text>Don't have an acoount? Register instead</Text>
+            <Text>Register</Text>
           </Button>
         </Content>
       </Content>
     </Container>
-  )
-
-  componentWillReceiveProps(nextProps){
-    this.setState();
-  }
 
   render() {
     if (this.props.user.loggedIn) this.props.history.push('/feed');
     if (this.props.user.isLoading) return <WaitingPage />
-    else return this.renderLogin();
+    else return this.renderLogin()
   }
 }
 

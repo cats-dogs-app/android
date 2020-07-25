@@ -2,7 +2,6 @@ import { Button, Card, Container, Content, Text, View } from 'native-base';
 import React, { Component } from 'react';
 import { BarChart, Grid, ProgressCircle, XAxis, YAxis } from 'react-native-svg-charts';
 import { connect } from 'react-redux';
-import { navigateTo } from '../redux/actions';
 import FooterComponent from './FooterComponent';
 import styles from './styles';
 
@@ -11,8 +10,6 @@ class FeedChartPage extends Component {
   constructor(props) {
     super(props);
     this.state = { data:[20, 30, 10, 5, 20, 5, 20]};
-
-    if (!this.props.user.loggedIn) this.props.navigateTo({ page: 'Login' });
   }
 
   renderChart() {
@@ -53,6 +50,7 @@ class FeedChartPage extends Component {
   }
 
   render() {
+    if (!this.props.user.loggedIn) this.props.history.push('/');
     return (
       <Container style={styles.lightBackground}>
         <Content style={styles.marginedContent}>
@@ -61,7 +59,7 @@ class FeedChartPage extends Component {
             <Text style={styles.black}>HAFTALIK DEĞİŞİM</Text>
           </Button>
           <ProgressCircle style={{ height: 200, margin: 24 }} progress={0.7} progressColor={'#00b738'} strokeWidth={15} />
-          <Button rounded block style={styles.button} onPress={() => this.props.navigateTo({page: 'FeedChart'})}>
+          <Button rounded block style={styles.button} onPress={() => this.props.history.push('/feed')}>
             <Text>PREMİUM'A KATIL</Text>
           </Button>
           <Button disabled rounded block style={styles.disabledButton}>
@@ -81,7 +79,6 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    navigateTo: content => { dispatch(navigateTo(content)) }
   };
 };
 

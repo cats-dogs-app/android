@@ -2,14 +2,14 @@ import { LOAD_NAVIGATION, LOGIN_SUCCESS, LOGOUT_SUCCESS, REFRESH_ERRORS, REGISTE
 
 export const noLogin = ({ apikey }) => dispatch => {
   dispatch(loginSuccess({ appKey: apikey }));
-  dispatch(navigateTo({ page: '...' }));
+  dispatch(refreshErrors());
 };
 
 export const loginRequest = ({ username, password }) => dispatch => {
   dispatch(requestStarted());
   if(username=="a") {
     dispatch(loginSuccess({}));
-    dispatch(navigateTo({ page: 'FeedSelection' }));
+    dispatch(refreshErrors());
   }
   else {
     dispatch(requestFailure("ERROR"));
@@ -19,23 +19,12 @@ export const loginRequest = ({ username, password }) => dispatch => {
 export const logoutRequest = () => dispatch => {
   dispatch(requestStarted());
   dispatch(logoutSuccess());
-  dispatch(navigateTo({ page: 'Login' }));
+  dispatch(refreshErrors());
 };
 
 export const registerRequest = ({ username, password, email }) => dispatch => {
   dispatch(requestStarted());
 };
-
-export const navigateTo = ({ page, id }) => (dispatch, getState) => {
-  let nav = getState().nav;
-  switch (page) {
-    default: {
-      console.log(nav);
-      nav.navigate(page);
-    }
-  }
-  dispatch(refreshErrors());
-}
 
 const refreshErrors = () => ({
   type: REFRESH_ERRORS
@@ -60,10 +49,5 @@ const requestStarted = () => ({
 
 const requestFailure = content => ({
   type: REQUEST_FAILURE,
-  payload: { content }
-});
-
-export const loadNavigation = content => ({
-  type: LOAD_NAVIGATION,
   payload: { content }
 });

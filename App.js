@@ -1,27 +1,12 @@
 import * as Font from 'expo-font';
 import React from 'react';
-import { createAppContainer } from 'react-navigation';
-import { createStackNavigator } from 'react-navigation-stack';
 import { Provider } from 'react-redux';
 import { applyMiddleware, createStore } from 'redux';
 import thunk from 'redux-thunk';
-import { FeedChartPage, LoginPage, RegisterPage, WaitingPage, FeedSelectionPage } from './components/pages';
+import { FeedChartPage, HomePage, LoginPage, RegisterPage, WaitingPage, FeedSelectionPage } from './components/pages';
 import reducers from './redux/reducers';
+import { NativeRouter, Route } from "react-router-native";
 
-export const AppStack = createStackNavigator(
-  {
-    Login: { screen: LoginPage },
-    Register: { screen: RegisterPage },
-    FeedSelection: { screen: FeedSelectionPage },
-    FeedChart: { screen: FeedChartPage },
-  },
-  {
-    initialRouteName: 'Login'
-  }
-);
-
-
-const AppContainer = createAppContainer(AppStack);
 const store = createStore(reducers, applyMiddleware(thunk));
 
 export default class App extends React.Component {
@@ -44,7 +29,13 @@ export default class App extends React.Component {
     )
     else return (
       <Provider store={store}>
-        <AppContainer />
+        <NativeRouter >
+          <Route exact path="/" component={HomePage} />
+          <Route exact path="/login" component={LoginPage} />
+          <Route path="/register" component={RegisterPage} />
+          <Route path="/feed" component={FeedSelectionPage} />
+          <Route path="/chart" component={FeedChartPage} />
+        </NativeRouter>
       </Provider>
     )
   }
