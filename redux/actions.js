@@ -3,11 +3,12 @@ import { firebase } from './firebase';
 
 export const noLogin = ({ apikey }) => dispatch => {
   dispatch(loginSuccess({ appKey: apikey }));
-  dispatch(navigateTo({ page: '...' }));
+  dispatch(refreshErrors());
 };
 
 export const loginRequest = ({ username, password }) => dispatch => {
   dispatch(requestStarted());
+  
   try {
     firebase.auth().signInWithEmailAndPassword(username, password).then(() => {
       dispatch(loginSuccess({}));
@@ -23,7 +24,7 @@ export const loginRequest = ({ username, password }) => dispatch => {
 
 export const logoutRequest = () => dispatch => {
   dispatch(requestStarted());
-
+  
   try {
     firebase.auth().signOut().then(function() {
       dispatch(logoutSuccess());
@@ -98,10 +99,5 @@ const requestStarted = () => ({
 
 const requestFailure = content => ({
   type: REQUEST_FAILURE,
-  payload: { content }
-});
-
-export const loadNavigation = content => ({
-  type: LOAD_NAVIGATION,
   payload: { content }
 });

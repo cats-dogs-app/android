@@ -1,20 +1,19 @@
 import { Button, Container, Content, Form, Input, Item, Text } from 'native-base';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { loadNavigation, loginRequest, navigateTo, noLogin } from '../redux/actions';
+import { loadNavigation, loginRequest, noLogin } from '../redux/actions';
 import styles from './styles';
 import WaitingPage from './WaitingPage';
+import { withRouter } from "react-router";
 
 class LoginPage extends Component {
 
   constructor(props) {
     super(props);
     this.state = {};
-    if (!this.props.nav) this.props.loadNavigation(this.props.navigation);
-    if (this.props.user.loggedIn) this.props.navigateTo({ page: 'FeedSelection' });
   }
 
-  renderLogin = () => 
+  renderLogin = () => (
     <Container style={styles.whiteBackground}>
       <Content style={styles.marginedContent}>
         <Content style={styles.inputItem}>
@@ -42,16 +41,22 @@ class LoginPage extends Component {
           <Button rounded style={styles.button} block onPress={() => this.props.loginRequest({ username: this.state.username, password: this.state.password })}>
             <Text>Login</Text>
           </Button>
-          <Button rounded style={styles.button} block onPress={() => this.props.navigateTo({ page: 'Register' })}>
+          <Button rounded style={styles.button} block onPress={() => this.props.history.push("/register")}>
             <Text>Don't have an acoount? Register instead</Text>
           </Button>
         </Content>
       </Content>
     </Container>
+  )
+
+  componentWillReceiveProps(nextProps){
+    this.setState();
+  }
 
   render() {
+    if (this.props.user.loggedIn) this.props.history.push('/feed');
     if (this.props.user.isLoading) return <WaitingPage />
-    else return this.renderLogin()
+    else return this.renderLogin();
   }
 }
 
@@ -64,9 +69,8 @@ const mapDispatchToProps = dispatch => {
   return {
     loadNavigation: content => { dispatch(loadNavigation(content)) },
     loginRequest: credentials => { dispatch(loginRequest(credentials)) },
-    navigateTo: content => { dispatch(navigateTo(content)) },
     noLogin: content => { dispatch(noLogin(content)) }
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(LoginPage);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(LoginPage));

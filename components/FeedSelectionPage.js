@@ -23,8 +23,6 @@ class FeedSelectionPage extends Component {
   constructor(props) {
     super(props);
     this.state = { selected: 'key1' };
-
-    if (!this.props.user.loggedIn) this.props.navigateTo({ page: 'Login' });
   }
 
   onValueChange(value) {
@@ -45,6 +43,7 @@ class FeedSelectionPage extends Component {
   }
 
   render() {
+    if (!this.props.user.loggedIn) this.props.history.push('/');
     return (
       <Container style={styles.lightBackground}>
         <Content style={styles.marginedContent}>

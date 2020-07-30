@@ -18,7 +18,7 @@ class LoginPage extends Component {
     <Container style={styles.whiteBackground}>
       <Content style={styles.marginedContent}>
         <Content style={styles.marginedTop12}>
-        <Button rounded style={styles.button} block onPress={() => this.props.navigateTo({ page: 'Login' })}>
+          <Button rounded style={styles.button} block onPress={() => this.props.navigateTo({ page: 'Login' })}>
             <Text>Login</Text>
           </Button>
           <Button rounded style={styles.button} block onPress={() => this.props.navigateTo({ page: 'Register' })}>
