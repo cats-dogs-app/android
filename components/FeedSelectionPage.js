@@ -2,7 +2,7 @@ import { Button, Container, Content, Text, View } from 'native-base';
 import React, { Component } from 'react';
 import Swiper from 'react-native-swiper';
 import { connect } from 'react-redux';
-import { navigateTo } from '../redux/actions';
+import { navigateTo, pushPage } from '../redux/actions';
 import FeedSelectionComponent from './FeedSelectionComponent';
 import FooterComponent from './FooterComponent';
 import { WaitingPage } from './pages';
@@ -92,7 +92,7 @@ class FeedSelectionPage extends Component {
         </Swiper>
 
           <View>
-            <Button rounded block style={styles.button} onPress={() => this.props.navigateTo({page: 'FeedChart'})}>
+            <Button rounded block style={styles.button} onPress={() => this.props.pushPage({page: 'FeedChart'})}>
               <Text>DEĞİŞİM GRAFİĞİ</Text>
             </Button>
             <Button disabled rounded block style={styles.disabledButton}>
@@ -113,7 +113,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    navigateTo: content => { dispatch(navigateTo(content)) }
+    navigateTo: content => { dispatch(navigateTo(content)) },
+    pushPage: content => { dispatch(pushPage(content)) }
   };
 };
 

@@ -5,7 +5,7 @@ import { createStackNavigator } from 'react-navigation-stack';
 import { Provider } from 'react-redux';
 import { applyMiddleware, createStore } from 'redux';
 import thunk from 'redux-thunk';
-import { FeedChartPage, LoginPage, RegisterPage, WaitingPage, FeedSelectionPage } from './components/pages';
+import { HomePage, FeedChartPage, LoginPage, RegisterPage, WaitingPage, FeedSelectionPage } from './components/pages';
 import reducers from './redux/reducers';
 
 export const AppStack = createStackNavigator(
@@ -14,9 +14,14 @@ export const AppStack = createStackNavigator(
     Register: { screen: RegisterPage },
     FeedSelection: { screen: FeedSelectionPage },
     FeedChart: { screen: FeedChartPage },
+    Home: { screen: HomePage }
   },
-  {
-    initialRouteName: 'Login'
+  {    
+    headerMode: 'none',
+    navigationOptions: {
+      headerShown: false,
+    },
+    initialRouteName: 'Home'
   }
 );
 
