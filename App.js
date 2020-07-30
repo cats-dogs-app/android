@@ -7,6 +7,26 @@ import { FeedChartPage, HomePage, LoginPage, RegisterPage, WaitingPage, FeedSele
 import reducers from './redux/reducers';
 import { NativeRouter, Route } from "react-router-native";
 
+export const AppStack = createStackNavigator(
+  {
+    Login: { screen: LoginPage },
+    Register: { screen: RegisterPage },
+    FeedSelection: { screen: FeedSelectionPage },
+    FeedChart: { screen: FeedChartPage },
+    Home: { screen: HomePage }
+  },
+  {    
+    headerMode: 'none',
+    navigationOptions: {
+      headerShown: false,
+    },
+    initialRouteName: 'Home'
+  }
+);
+
+
+const AppContainer = createAppContainer(AppStack);
+
 const store = createStore(reducers, applyMiddleware(thunk));
 
 export default class App extends React.Component {
