@@ -1,7 +1,7 @@
 import { Button, Container, Content, Form, Input, Item, Text } from 'native-base';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { navigateTo, registerRequest } from '../redux/actions';
+import { pushPage, registerRequest } from '../redux/actions';
 import styles from './styles';
 import WaitingPage from './WaitingPage';
 
@@ -48,7 +48,7 @@ class RegisterPage extends Component {
           <Button rounded style={styles.button} block onPress={() => this.props.registerRequest({ username: this.state.username, password: this.state.password, email: this.state.email })}>
             <Text>Register</Text>
           </Button>
-          <Button rounded style={styles.button} block onPress={() => this.props.navigateTo({ page: 'Login' })}>
+          <Button rounded style={styles.button} block onPress={() => this.props.pushPage({ page: 'Login' })}>
             <Text>Have an account? Login instead</Text>
           </Button>
         </Content>
@@ -69,7 +69,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     registerRequest: credentials => { dispatch(registerRequest(credentials)) },
-    navigateTo: content => { dispatch(navigateTo(content)) }
+    pushPage: content => { dispatch(pushPage(content)) }
   };
 };
 

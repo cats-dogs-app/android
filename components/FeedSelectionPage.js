@@ -24,7 +24,7 @@ class FeedSelectionPage extends Component {
     super(props);
     this.state = { selected: 'key1' };
 
-    if (!this.props.user.loggedIn) this.props.navigateTo({ page: 'Login' });
+    if (!this.props.user.loggedIn) this.props.navigateTo({ page: 'Home' });
   }
 
   onValueChange(value) {

@@ -1,7 +1,7 @@
 import { Button, Container, Content, Form, Input, Item, Text } from 'native-base';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { loadNavigation, loginRequest, navigateTo, noLogin } from '../redux/actions';
+import { loadNavigation, loginRequest, pushPage, noLogin } from '../redux/actions';
 import styles from './styles';
 import WaitingPage from './WaitingPage';
 
@@ -10,7 +10,6 @@ class LoginPage extends Component {
   constructor(props) {
     super(props);
     this.state = {};
-    if (!this.props.nav) this.props.loadNavigation(this.props.navigation);
     if (this.props.user.loggedIn) this.props.navigateTo({ page: 'FeedSelection' });
   }
 
@@ -42,7 +41,7 @@ class LoginPage extends Component {
           <Button rounded style={styles.button} block onPress={() => this.props.loginRequest({ username: this.state.username, password: this.state.password })}>
             <Text>Login</Text>
           </Button>
-          <Button rounded style={styles.button} block onPress={() => this.props.navigateTo({ page: 'Register' })}>
+          <Button rounded style={styles.button} block onPress={() => this.props.pushPage({ page: 'Register' })}>
             <Text>Don't have an acoount? Register instead</Text>
           </Button>
         </Content>
@@ -64,7 +63,7 @@ const mapDispatchToProps = dispatch => {
   return {
     loadNavigation: content => { dispatch(loadNavigation(content)) },
     loginRequest: credentials => { dispatch(loginRequest(credentials)) },
-    navigateTo: content => { dispatch(navigateTo(content)) },
+    pushPage: content => { dispatch(pushPage(content)) },
     noLogin: content => { dispatch(noLogin(content)) }
   };
 };

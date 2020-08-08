@@ -11,7 +11,7 @@ export const loginRequest = ({ username, password }) => dispatch => {
   try {
     firebase.auth().signInWithEmailAndPassword(username, password).then(() => {
       dispatch(loginSuccess({}));
-      dispatch(navigateTo({ page: 'FeedSelection' }));
+      dispatch(pushPage({ page: 'FeedSelection' }));
       }).catch(error => {
         dispatch(requestFailure(error));
       });
@@ -27,7 +27,7 @@ export const logoutRequest = () => dispatch => {
   try {
     firebase.auth().signOut().then(function() {
       dispatch(logoutSuccess());
-      dispatch(navigateTo({ page: 'Login' }));
+      dispatch(popToTop());
     }).catch(function(error) {
       dispatch(requestFailure(error));
     });
@@ -43,7 +43,7 @@ export const registerRequest = ({ username, password, email }) => dispatch => {
   try {
     firebase.auth().createUserWithEmailAndPassword(username, password).then(() => {
       dispatch(registerSuccess({}));
-      dispatch(navigateTo({ page: 'FeedSelection' }));
+      dispatch(pushPage({ page: 'FeedSelection' }));
     }).catch(error => {
       dispatch(requestFailure(error));
     });
@@ -72,6 +72,12 @@ export const pushPage = ({ page }) => (dispatch, getState) => {
       nav.push(page);
     }
   }
+  dispatch(refreshErrors());
+}
+
+export const popToTop = () => (dispatch, getState) => {
+  let nav = getState().nav;
+  nav.popToTop();
   dispatch(refreshErrors());
 }
 
