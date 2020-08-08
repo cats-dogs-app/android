@@ -25,9 +25,11 @@ class FeedSelectionComponent extends Component {
 	
 	renderModalContent() {  //CHANGE_HERE
 		return (
-			<Form>
-				<Item fixedLabel>
-					<Label>{this.state.selectedFeed}</Label>
+			<Form style={{margin: 30}}>
+				<Label style={{marginBottom: 8}}>
+					{this.state.selectedFeed}
+				</Label>
+				<Item rounded>
 					<Input 
 						defaultValue={this.state.amount}
 						onChangeText={text => this.setState({nextAmount: text})}
@@ -38,7 +40,7 @@ class FeedSelectionComponent extends Component {
 						visibleModal: false,
 						amount: this.state.nextAmount
 					})}
-					style={styles.greenBackground}
+					style={[styles.greenBackground, {marginTop: 12}]}
 				>
 					<Text>Kaydet</Text>
 				</Button>
