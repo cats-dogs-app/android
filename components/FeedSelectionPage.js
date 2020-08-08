@@ -2,7 +2,7 @@ import { Button, Container, Content, DatePicker, Text, View } from 'native-base'
 import React, { Component } from 'react';
 import Swiper from 'react-native-swiper';
 import { connect } from 'react-redux';
-import { navigateTo, pushPage } from '../redux/actions';
+import { dateChangeAction, navigateTo, pushPage } from '../redux/actions';
 import FeedSelectionComponent from './FeedSelectionComponent';
 import FooterComponent from './FooterComponent';
 import { WaitingPage } from './pages';
@@ -40,13 +40,10 @@ class FeedSelectionPage extends Component {
   }
 
   onDateValueChange(value) {
-    this.setState({
-      date: this.formatDate(value)
-    });
-
-    // sayfa degistirmek
-    
-    console.log(this.state);
+    const date = this.formatDate(value);
+    this.setState({ date });
+    this.props.dateChangeAction({ date });    
+    console.log(this.props.user);
   }
 
   renderFeeds() {
@@ -93,6 +90,7 @@ class FeedSelectionPage extends Component {
 	}
 
   render() {
+    console.log(this.props.user);
     return (
       <Container style={styles.lightBackground}>
         <Content style={styles.marginedContent}>
@@ -163,7 +161,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     navigateTo: content => { dispatch(navigateTo(content)) },
-    pushPage: content => { dispatch(pushPage(content)) }
+    pushPage: content => { dispatch(pushPage(content)) },
+    dateChangeAction: content => {dispatch(dateChangeAction(content))}
   };
 };
 

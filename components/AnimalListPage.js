@@ -1,7 +1,7 @@
 import { Container, Content, List, ListItem, Text } from 'native-base';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { pushPage } from '../redux/actions';
+import { animalSelectionAction, pushPage } from '../redux/actions';
 import FooterComponent from './FooterComponent';
 import styles from './styles';
 
@@ -19,11 +19,12 @@ class AnimalListPage extends Component {
 
   renderList() {
     const {selectedAnimalsList} = this.props.user;
-    let list;
+    let list = [];
     if(selectedAnimalsList == "cat") list = catList;
     if(selectedAnimalsList == "dog") list = dogList;
+    
     return list.map(item => {
-      return <ListItem onPress={() => this.props.pushPage({ page: 'FeedChart' })}>
+      return <ListItem onPress={() => this.props.animalSelectionAction({ animal: {item} })}>
         <Text>{item}</Text>
       </ListItem>
     })
@@ -50,7 +51,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    pushPage: content => { dispatch(pushPage(content)) }
+    pushPage: content => { dispatch(pushPage(content)) },
+    animalSelectionAction: content => {dispatch(animalSelectionAction(content))}
   };
 };
 
