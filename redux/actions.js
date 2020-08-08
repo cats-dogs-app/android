@@ -1,4 +1,4 @@
-import { LOAD_NAVIGATION, LOGIN_SUCCESS, LOGOUT_SUCCESS, REFRESH_ERRORS, REGISTER_SUCCESS, REQUEST_FAILURE, REQUEST_STARTED } from "./actionTypes";
+import { LOAD_NAVIGATION, LOGIN_SUCCESS, LOGOUT_SUCCESS, REFRESH_ERRORS, REGISTER_SUCCESS, REQUEST_FAILURE, REQUEST_STARTED, SELECTION_CHANGE } from "./actionTypes";
 import { firebase } from './firebase';
 
 export const noLogin = ({ apikey }) => dispatch => {
@@ -53,6 +53,11 @@ export const registerRequest = ({ username, password, email }) => dispatch => {
   
 };
 
+export const selectionChangeAction = ({ selection }) => dispatch => {
+  dispatch(changeSelection(selection));
+  dispatch(pushPage({ page: 'AnimalList' }));
+};
+
 export const navigateTo = ({ page }) => (dispatch, getState) => {
   let nav = getState().nav;
   switch (page) {
@@ -104,6 +109,11 @@ const requestStarted = () => ({
 
 const requestFailure = content => ({
   type: REQUEST_FAILURE,
+  payload: { content }
+});
+
+const changeSelection = content => ({
+  type: SELECTION_CHANGE,
   payload: { content }
 });
 

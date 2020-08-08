@@ -43,6 +43,9 @@ class FeedSelectionPage extends Component {
     this.setState({
       date: this.formatDate(value)
     });
+
+    // sayfa degistirmek
+    
     console.log(this.state);
   }
 
