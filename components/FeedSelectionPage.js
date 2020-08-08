@@ -1,4 +1,4 @@
-import { Button, Container, Content, Text, View } from 'native-base';
+import { Button, Container, Content, DatePicker, Text, View } from 'native-base';
 import React, { Component } from 'react';
 import Swiper from 'react-native-swiper';
 import { connect } from 'react-redux';
@@ -22,7 +22,13 @@ class FeedSelectionPage extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { selected: 'key1' };
+    this.state = { 
+      selected: 'key1',
+      date: '' 
+    };
+
+    this.onDateValueChange = this.onDateValueChange.bind(this);
+    this.onValueChange = this.onValueChange.bind(this);
 
     if (!this.props.user.loggedIn) this.props.navigateTo({ page: 'Home' });
   }
@@ -31,6 +37,13 @@ class FeedSelectionPage extends Component {
     this.setState({
       selected: value
     });
+  }
+
+  onDateValueChange(value) {
+    this.setState({
+      date: this.formatDate(value)
+    });
+    console.log(this.state);
   }
 
   renderFeeds() {
@@ -44,6 +57,38 @@ class FeedSelectionPage extends Component {
     )
   }
 
+  formatDate(date) {
+    let d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
+
+    return [year, month, day].join('-');
+}
+
+	renderDatePicker() {
+    // const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    return  <DatePicker
+			defaultDate={new Date(2020, 8, 7)}
+			minimumDate={new Date(2020, 8, 7)}
+			locale={"en"}
+			timeZoneOffsetInMinutes={undefined}
+			modalTransparent={false}
+			animationType={"fade"}
+			androidMode={"default"}
+			placeHolderText="Tarih seçin"
+			textStyle={{ color: "green" }}
+			placeHolderTextStyle={{ color: "#d3d3d3" }}
+			onDateChange={this.onDateValueChange}
+      disabled={false}
+      // formatChosenDate={date => date.toLocaleDateString(options)}
+			/>
+      // TODO: Date formatter
+	}
+
   render() {
     return (
       <Container style={styles.lightBackground}>
@@ -51,6 +96,7 @@ class FeedSelectionPage extends Component {
           <Button disabled rounded block style={styles.disabledButton}>
             <Text style={styles.black}>İSİM</Text>
           </Button>        
+  				{this.renderDatePicker()}
           <Swiper
             dot={
               <View
