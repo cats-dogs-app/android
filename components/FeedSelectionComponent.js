@@ -13,8 +13,7 @@ class FeedSelectionComponent extends Component {
 			selectedFeed: 'key1',
 			visibleModal: false,
 			modalField: '',
-			amount: 0,
-			nextAmount: 0
+			amount: 0
 		};
 	}
 	
@@ -24,22 +23,27 @@ class FeedSelectionComponent extends Component {
 		});
 	}
 	
-	renderModalContent() {  //CHANGE_HERE
+	renderModalContent() {
+		const selectedFeed = this.props.user.feed[this.state.selectedFeed];
+		const calories = (this.state.amount/100)*_.values(selectedFeed)[0]; 
+		// Kalori hesabı
 		return (
 			<Form style={{margin: 30}}>
 				<Label style={{marginBottom: 8}}>
 					{this.state.selectedFeed}
 				</Label>
+				<Label style={{marginBottom: 8}}>
+					{calories}
+				</Label>
 				<Item rounded>
 					<Input 
 						defaultValue={this.state.amount}
-						onChangeText={text => this.setState({nextAmount: text})}
+						onChangeText={text => this.setState({amount: text})}
 						keyboardType="number-pad"/>
 				</Item>
 				<Button
 					onPress={() => this.setState({
-						visibleModal: false,
-						amount: this.state.nextAmount
+						visibleModal: false
 					})}
 					style={[styles.greenBackground, {marginTop: 12}]}
 				>
@@ -50,12 +54,10 @@ class FeedSelectionComponent extends Component {
 	}
 
 	renderFeeds() {
-		let {feed} = this.props.user;
-		return _.map(feed, (value, key) => {
-			return <Picker.Item 
-			label={key}
-			value={key}/>
-		}
+		let { feed } = this.props.user;
+		return _.map(feed, (value, key) => <Picker.Item 
+				label={key}
+				value={key}/>
 		)
   }
 			

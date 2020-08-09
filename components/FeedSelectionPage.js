@@ -56,6 +56,8 @@ class FeedSelectionPage extends Component {
     else return (
       <View style={{padding: 8}}>
         <FeedSelectionComponent/>
+        <FeedSelectionComponent/>
+        <FeedSelectionComponent/>
       </View>
     )
   }
@@ -93,7 +95,6 @@ class FeedSelectionPage extends Component {
 	}
 
   render() {
-    // console.log(this.props.user);
     return (
       <Container style={styles.lightBackground}>
         <Content style={styles.marginedContent}>
