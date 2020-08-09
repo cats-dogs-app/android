@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { Modal, TouchableOpacity } from 'react-native'; // CHANGE_HERE
 import { connect } from 'react-redux';
 import styles from './styles';
+import lodash from 'lodash';
 
 class FeedSelectionComponent extends Component {
 	
@@ -48,11 +49,17 @@ class FeedSelectionComponent extends Component {
 		)
 	}
 
-	renderPickerItem(text) {
-		return <Picker.Item 
-			label={text}
-			value={text}/>
-	}
+	renderFeeds() {
+		let {feed} = this.props.user;
+		// Feed is correct
+		// mapping is not done
+		return Object.keys(feed).map((value) => {
+			return <Picker.Item 
+			label={"asd"}
+			value={"asd"}/>
+		}
+		)
+  }
 			
 	render() {
 		return (
@@ -65,10 +72,7 @@ class FeedSelectionComponent extends Component {
 							selectedValue={this.state.selectedFeed}
 							onValueChange={this.onValueChange.bind(this)}
 							>
-							{this.renderPickerItem("Besin 1")}
-							{this.renderPickerItem("Besin 2")}
-							{this.renderPickerItem("Besin 3")}
-							{this.renderPickerItem("Besin 4")}
+							{this.renderFeeds()}
 						</Picker>
 					</View>
 				</Col>
@@ -96,8 +100,13 @@ class FeedSelectionComponent extends Component {
 		}
 }
 			
+const mapStateToProps = state => {
+	const user = state.user;
+	return { user };
+};
+
 const mapDispatchToProps = dispatch => {
 	return {};
 };
 
-export default connect(null, mapDispatchToProps)(FeedSelectionComponent);
+export default connect(mapStateToProps, mapDispatchToProps)(FeedSelectionComponent);

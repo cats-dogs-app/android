@@ -2,7 +2,7 @@ import { Button, Container, Content, DatePicker, Text, View } from 'native-base'
 import React, { Component } from 'react';
 import Swiper from 'react-native-swiper';
 import { connect } from 'react-redux';
-import { dateChangeAction, navigateTo, pushPage } from '../redux/actions';
+import { dateChangeAction, feedRequestAction, navigateTo, pushPage } from '../redux/actions';
 import FeedSelectionComponent from './FeedSelectionComponent';
 import FooterComponent from './FooterComponent';
 import { WaitingPage } from './pages';
@@ -33,6 +33,12 @@ class FeedSelectionPage extends Component {
     if (!this.props.user.loggedIn) this.props.navigateTo({ page: 'Home' });
   }
 
+  componentDidMount(){
+    if(Object.keys(this.props.user.feed).length === 0) {
+      this.props.feedRequestAction();
+    }
+  }
+
   onValueChange(value) {
     this.setState({
       selected: value
@@ -43,15 +49,12 @@ class FeedSelectionPage extends Component {
     const date = this.formatDate(value);
     this.setState({ date });
     this.props.dateChangeAction({ date });    
-    console.log(this.props.user);
   }
 
   renderFeeds() {
     if (this.props.user.isLoading) return <WaitingPage />
     else return (
       <View style={{padding: 8}}>
-        <FeedSelectionComponent/>
-        <FeedSelectionComponent/>
         <FeedSelectionComponent/>
       </View>
     )
@@ -162,7 +165,8 @@ const mapDispatchToProps = dispatch => {
   return {
     navigateTo: content => { dispatch(navigateTo(content)) },
     pushPage: content => { dispatch(pushPage(content)) },
-    dateChangeAction: content => {dispatch(dateChangeAction(content))}
+    dateChangeAction: content => {dispatch(dateChangeAction(content))},
+    feedRequestAction: () => {dispatch(feedRequestAction())}
   };
 };
 

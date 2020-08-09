@@ -1,5 +1,5 @@
-import { ANIMAL_SELECTION, DATE_CHANGE, LOAD_NAVIGATION, LOGIN_SUCCESS, LOGOUT_SUCCESS, REFRESH_ERRORS, REGISTER_SUCCESS, REQUEST_FAILURE, REQUEST_STARTED, SELECTION_CHANGE } from "./actionTypes";
-import { firebase } from './firebase';
+import { ANIMAL_SELECTION, DATE_CHANGE, FEED_REQUEST, LOAD_NAVIGATION, LOGIN_SUCCESS, LOGOUT_SUCCESS, REFRESH_ERRORS, REGISTER_SUCCESS, REQUEST_FAILURE, REQUEST_STARTED, SELECTION_CHANGE } from "./actionTypes";
+import { db, firebase } from './firebase';
 
 export const noLogin = ({ apikey }) => dispatch => {
   dispatch(loginSuccess({ appKey: apikey }));
@@ -65,6 +65,21 @@ export const animalSelectionAction = ({ animal }) => dispatch => {
 
 export const dateChangeAction = ({ date }) => dispatch => {
   dispatch(dateChange(date));
+};
+
+export const feedRequestAction = () => dispatch => {
+  dispatch(requestStarted());
+
+  try {
+    db.ref('/mama/').once('value').then(function(snapshot) {
+      dispatch(feedRequest(snapshot));
+    }).catch(error => {
+      dispatch(requestFailure(error));
+    });
+  } catch(err){
+    dispatch(requestFailure(err));
+  }
+    
 };
 
 export const navigateTo = ({ page }) => (dispatch, getState) => {
@@ -133,6 +148,11 @@ const animalSelection = content => ({
 
 const dateChange = content => ({
   type: DATE_CHANGE,
+  payload: { content }
+});
+
+const feedRequest = content => ({
+  type: FEED_REQUEST,
   payload: { content }
 });
 
