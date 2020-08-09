@@ -93,7 +93,7 @@ class FeedSelectionPage extends Component {
 	}
 
   render() {
-    console.log(this.props.user);
+    // console.log(this.props.user);
     return (
       <Container style={styles.lightBackground}>
         <Content style={styles.marginedContent}>
