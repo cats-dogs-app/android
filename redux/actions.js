@@ -1,4 +1,4 @@
-import { ANIMAL_SELECTION, DATE_CHANGE, FEED_REQUEST, LOAD_NAVIGATION, LOGIN_SUCCESS, LOGOUT_SUCCESS, REFRESH_ERRORS, REGISTER_SUCCESS, REQUEST_FAILURE, REQUEST_STARTED, SELECTION_CHANGE } from "./actionTypes";
+import { ANIMAL_SELECTION, CREATE_ANIMAL, DATE_CHANGE, FEED_REQUEST, LOAD_NAVIGATION, LOGIN_SUCCESS, LOGOUT_SUCCESS, REFRESH_ERRORS, REGISTER_SUCCESS, REQUEST_FAILURE, REQUEST_STARTED, SELECTION_CHANGE } from "./actionTypes";
 import { db, firebase } from './firebase';
 
 export const noLogin = ({ apikey }) => dispatch => {
@@ -10,8 +10,8 @@ export const loginRequest = ({ username, password }) => dispatch => {
   dispatch(requestStarted());
   try {
     firebase.auth().signInWithEmailAndPassword(username, password).then(() => {
-      dispatch(loginSuccess({}));
-      dispatch(pushPage({ page: 'FeedSelection' }));
+      dispatch(loginSuccess(username));
+      dispatch(pushPage({ page: 'AnimalList' }));
       }).catch(error => {
         dispatch(requestFailure(error));
       });
@@ -63,9 +63,44 @@ export const animalSelectionAction = ({ animal }) => dispatch => {
   dispatch(pushPage({ page: 'FeedSelection' }));
 };
 
+export const animalCreationAction = ({ animal }) => (dispatch, getState) => {
+  const user = getState().user;
+  const type = user.selectedAnimalsList;
+  console.log(animal, user.selectedAnimalsList, user.username, user);
+  const name = user.username.split('@')[0];
+
+  try {
+    var updates = {};
+    updates['/users/' + name + '/pets/' + type + '/' + animal] = {
+      a : "asd"
+    };
+
+    firebase.database().ref().update(updates);
+  } catch(err){
+    dispatch(requestFailure(err));
+  }
+}
+
 export const dateChangeAction = ({ date }) => dispatch => {
   dispatch(dateChange(date));
 };
+
+export const feedSaveAction = ({ date, feed, amount, animal }) => (dispatch, getState) => {
+  let user = getState().user;
+  const type = user.selectedAnimalsList;
+  console.log(animal, user.selectedAnimalsList, user.username, user);
+  const name = user.username.split('@')[0];
+  try {
+    var updates = {};
+    updates['/users/' + name + '/pets/' + type + '/' + animal + '/' + feed] = {
+      amount
+    };
+
+    firebase.database().ref().update(updates);
+  } catch(err){
+    dispatch(requestFailure(err));
+  }
+}
 
 export const feedRequestAction = () => dispatch => {
   dispatch(requestStarted());
@@ -153,6 +188,11 @@ const dateChange = content => ({
 
 const feedRequest = content => ({
   type: FEED_REQUEST,
+  payload: { content }
+});
+
+const createAnimal = content => ({
+  type: CREATE_ANIMAL,
   payload: { content }
 });
 
