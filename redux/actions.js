@@ -72,7 +72,7 @@ export const feedRequestAction = () => dispatch => {
 
   try {
     db.ref('/mama/').once('value').then(function(snapshot) {
-      dispatch(feedRequest(snapshot));
+      dispatch(feedRequest(snapshot.val()));
     }).catch(error => {
       dispatch(requestFailure(error));
     });

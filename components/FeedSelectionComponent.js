@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { Modal, TouchableOpacity } from 'react-native'; // CHANGE_HERE
 import { connect } from 'react-redux';
 import styles from './styles';
-import lodash from 'lodash';
+import { _ } from 'lodash';
 
 class FeedSelectionComponent extends Component {
 	
@@ -51,12 +51,10 @@ class FeedSelectionComponent extends Component {
 
 	renderFeeds() {
 		let {feed} = this.props.user;
-		// Feed is correct
-		// mapping is not done
-		return Object.keys(feed).map((value) => {
+		return _.map(feed, (value, key) => {
 			return <Picker.Item 
-			label={"asd"}
-			value={"asd"}/>
+			label={key}
+			value={key}/>
 		}
 		)
   }
