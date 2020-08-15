@@ -1,7 +1,7 @@
 import { Button, Container, Content, Text } from 'native-base';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { loadNavigation, loginRequest, navigateTo, noLogin } from '../redux/actions';
+import { loginRequest, navigateTo, noLogin } from '../redux/actions';
 import styles from './styles';
 import WaitingPage from './WaitingPage';
 
@@ -40,9 +40,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    loadNavigation: content => { dispatch(loadNavigation(content)) },
     loginRequest: credentials => { dispatch(loginRequest(credentials)) },
-    navigateTo: content => { dispatch(navigateTo(content)) },
     noLogin: content => { dispatch(noLogin(content)) }
   };
 };

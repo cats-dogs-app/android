@@ -107,7 +107,6 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    pushPage: content => { dispatch(pushPage(content)) },
     animalSelectionAction: content => {dispatch(animalSelectionAction(content))},
     animalCreationAction: content => {dispatch(animalCreationAction(content))}
   };

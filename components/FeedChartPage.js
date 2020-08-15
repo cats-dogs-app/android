@@ -2,7 +2,7 @@ import { Button, Card, Container, Content, Text, View } from 'native-base';
 import React, { Component } from 'react';
 import { BarChart, Grid, ProgressCircle, XAxis, YAxis } from 'react-native-svg-charts';
 import { connect } from 'react-redux';
-import { dateChangeAction, navigateTo } from '../redux/actions';
+import { dateChangeAction } from '../redux/actions';
 import FooterComponent from './FooterComponent';
 import styles from './styles';
 
@@ -81,7 +81,6 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    navigateTo: content => { dispatch(navigateTo(content)) }
   };
 };
 

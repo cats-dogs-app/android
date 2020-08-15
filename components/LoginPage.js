@@ -1,7 +1,7 @@
 import { Button, Container, Content, Form, Input, Item, Text } from 'native-base';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { loadNavigation, loginRequest } from '../redux/actions';
+import { loginRequest } from '../redux/actions';
 import styles from './styles';
 import WaitingPage from './WaitingPage';
 
