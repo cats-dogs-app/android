@@ -61,8 +61,20 @@ export const registerRequest = ({ username, password, email }) => dispatch => {
   
 };
 
-export const selectionChangeAction = ({ selection }) => dispatch => {
-  dispatch(changeSelection(selection));
+export const selectionChangeAction = ({ selection }) => (dispatch, getState) => {
+  const name = getState().user.username.split('@')[0];
+  try {
+    db.ref('/users/' + name + '/pets/' + selection + '/').once('value').then(function(snapshot) {
+      dispatch(changeSelection({
+        selection,
+        list: snapshot.val() === null ? [] : Object.keys(snapshot.val())
+      }));
+    }).catch(error => {
+      dispatch(requestFailure(error));
+    });
+  } catch(err){
+    dispatch(requestFailure(err));
+  }
 };
 
 export const animalSelectionAction = ({ animal }) => dispatch => {
@@ -71,8 +83,7 @@ export const animalSelectionAction = ({ animal }) => dispatch => {
 
 export const animalCreationAction = ({ animal }) => (dispatch, getState) => {
   const user = getState().user;
-  const type = user.selectedAnimalsList;
-  console.log(animal, user.selectedAnimalsList, user.username, user);
+  const type = user.selectedAnimals;
   const name = user.username.split('@')[0];
 
   try {
@@ -91,16 +102,15 @@ export const dateChangeAction = ({ date }) => dispatch => {
   dispatch(dateChange(date));
 };
 
-export const feedSaveAction = ({ date, feed, amount, animal }) => (dispatch, getState) => {
+export const feedSaveAction = ({ daily }) => (dispatch, getState) => {
   let user = getState().user;
-  const type = user.selectedAnimalsList;
-  console.log(animal, user.selectedAnimalsList, user.username, user);
+  const type = user.selectedAnimals;
+  const date = user.date;
+  const animal = user.animalSelection.item;
   const name = user.username.split('@')[0];
   try {
     var updates = {};
-    updates['/users/' + name + '/pets/' + type + '/' + animal + '/' + feed] = {
-      amount
-    };
+    updates['/users/' + name + '/pets/' + type + '/' + animal + '/' + date + '/'] = {dailyFeeds};
 
     firebase.database().ref().update(updates);
   } catch(err){

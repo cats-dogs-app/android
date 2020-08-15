@@ -8,16 +8,6 @@ import FooterComponent from './FooterComponent';
 import { WaitingPage } from './pages';
 import styles from './styles';
 
-const cards = [
-  {
-    text: 'Card One',
-  },
-  {
-    text: 'Card One',
-  },
-];
-
-
 class FeedSelectionPage extends Component {
 
   constructor(props) {
@@ -163,7 +153,8 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => {
-  return {    dateChangeAction: content => {dispatch(dateChangeAction(content))},
+  return {
+    dateChangeAction: content => {dispatch(dateChangeAction(content))},
     feedRequestAction: () => {dispatch(feedRequestAction())}
   };
 };

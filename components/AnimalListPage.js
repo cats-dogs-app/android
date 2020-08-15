@@ -6,8 +6,6 @@ import { animalCreationAction, animalSelectionAction } from '../redux/actions';
 import FooterComponent from './FooterComponent';
 import styles from './styles';
 
-const catList = ["cat1", "cat2"];
-const dogList = ["dog1", "dog2"];
 
 class AnimalListPage extends Component {
 
@@ -36,9 +34,7 @@ class AnimalListPage extends Component {
 				</Label>
 				<Item rounded>
 					<Input 
-						defaultValue={this.state.amount}
-						onChangeText={text => this.setState({animal: text})}
-						keyboardType="number-pad"/>
+						onChangeText={text => this.setState({animal: text})}/>
 				</Item>
 				<Button
 					onPress={() => {
@@ -57,11 +53,8 @@ class AnimalListPage extends Component {
   
   renderList() {
     const {selectedAnimalsList} = this.props.user;
-    let list = [];
-    if(selectedAnimalsList == "cat") list = catList;
-    if(selectedAnimalsList == "dog") list = dogList;
-    
-    return list.map(item => {
+    console.log(selectedAnimalsList);
+    return selectedAnimalsList.map(item => {
       return <ListItem onPress={() => {
         this.props.animalSelectionAction({ animal: {item} })
         this.setState({ 

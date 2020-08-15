@@ -1,6 +1,7 @@
 import { Button, Col, Form, Grid, Input, Item, Label, Picker, Text, View, Right } from 'native-base';
 import React, { Component } from 'react';
 import { Modal, TouchableOpacity } from 'react-native'; // CHANGE_HERE
+import { feedSaveAction } from '../redux/actions';
 import { connect } from 'react-redux';
 import styles from './styles';
 import { _ } from 'lodash';
@@ -42,9 +43,15 @@ class FeedSelectionComponent extends Component {
 						keyboardType="number-pad"/>
 				</Item>
 				<Button
-					onPress={() => this.setState({
-						visibleModal: false
-					})}
+					onPress={() => {
+            this.setState({
+						  visibleModal: false
+            })
+            this.props.feedSaveAction({
+              feed: this.state.selectedFeed, 
+              amount: this.state.amount 
+            })
+          }}
 					style={[styles.greenBackground, {marginTop: 12}]}
 				>
 					<Text>Kaydet</Text>
@@ -106,7 +113,9 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => {
-	return {};
+	return {
+    feedSaveAction: content => {dispatch(feedSaveAction(content))}
+  };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(FeedSelectionComponent);

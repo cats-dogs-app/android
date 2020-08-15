@@ -1,6 +1,13 @@
 import { ANIMAL_SELECTION, CREATE_ANIMAL, DATE_CHANGE, FEED_REQUEST, LOGIN_SUCCESS, LOGOUT_SUCCESS, REFRESH_ERRORS, REGISTER_SUCCESS, REQUEST_FAILURE, REQUEST_STARTED, SELECTION_CHANGE } from "../actionTypes";
 
-const initialState = { loggedIn: false, content: {}, isLoading: false, error: false, feed: {} };
+const initialState = { 
+  loggedIn: false, 
+  content: {}, 
+  isLoading: false, 
+  error: false, 
+  feed: {},
+  selectedAnimalsList: []
+};
 
 const user = (state = initialState, action) => {
   switch (action.type) {
@@ -37,7 +44,8 @@ const user = (state = initialState, action) => {
     }
     case SELECTION_CHANGE: {
       let copyState = { ...state };
-      copyState.selectedAnimalsList = action.payload.content;
+      copyState.selectedAnimals = action.payload.content.selection;
+      copyState.selectedAnimalsList = action.payload.content.list;
       return copyState;
     }
     case ANIMAL_SELECTION: {
