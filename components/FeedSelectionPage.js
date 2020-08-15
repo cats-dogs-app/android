@@ -2,7 +2,7 @@ import { Button, Container, Content, DatePicker, Text, View } from 'native-base'
 import React, { Component } from 'react';
 import Swiper from 'react-native-swiper';
 import { connect } from 'react-redux';
-import { dateChangeAction, feedRequestAction, navigateTo, pushPage } from '../redux/actions';
+import { dateChangeAction, feedRequestAction } from '../redux/actions';
 import FeedSelectionComponent from './FeedSelectionComponent';
 import FooterComponent from './FooterComponent';
 import { WaitingPage } from './pages';
@@ -30,7 +30,7 @@ class FeedSelectionPage extends Component {
     this.onDateValueChange = this.onDateValueChange.bind(this);
     this.onValueChange = this.onValueChange.bind(this);
 
-    if (!this.props.user.loggedIn) this.props.navigateTo({ page: 'Home' });
+    if (!this.props.user.loggedIn) this.props.navigation.navigate('Home');
   }
 
   componentDidMount(){
@@ -143,7 +143,7 @@ class FeedSelectionPage extends Component {
         </Swiper>
 
           <View>
-            <Button rounded block style={styles.button} onPress={() => this.props.pushPage({page: 'FeedChart'})}>
+            <Button rounded block style={styles.button} onPress={() => this.props.navigation.navigate('FeedChart')}>
               <Text>DEĞİŞİM GRAFİĞİ</Text>
             </Button>
             <Button disabled rounded block style={styles.disabledButton}>
@@ -163,10 +163,7 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => {
-  return {
-    navigateTo: content => { dispatch(navigateTo(content)) },
-    pushPage: content => { dispatch(pushPage(content)) },
-    dateChangeAction: content => {dispatch(dateChangeAction(content))},
+  return {    dateChangeAction: content => {dispatch(dateChangeAction(content))},
     feedRequestAction: () => {dispatch(feedRequestAction())}
   };
 };

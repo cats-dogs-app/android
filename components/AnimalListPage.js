@@ -2,7 +2,7 @@ import { Button, Container, Content, Form, Input, Item, Label, List, ListItem, T
 import React, { Component } from 'react';
 import { Modal, TouchableOpacity } from 'react-native'; // CHANGE_HERE
 import { connect } from 'react-redux';
-import { animalCreationAction, animalSelectionAction, pushPage } from '../redux/actions';
+import { animalCreationAction, animalSelectionAction } from '../redux/actions';
 import FooterComponent from './FooterComponent';
 import styles from './styles';
 
@@ -15,11 +15,17 @@ class AnimalListPage extends Component {
     super(props);
 		this.state = { 
       visibleModal: false,
-      animal: ''
+      animal: '',
+      selected: false
 		};
 
     this.renderList = this.renderList.bind(this);
-    if (!this.props.user.loggedIn) this.props.pushPage({ page: 'Home' });
+    if (!this.props.user.loggedIn) this.props.navigation.navigate('Home');
+  }
+
+  componentDidUpdate(prevState){
+    const {selected} = this.state;
+    if (selected && !prevState.selected) this.props.navigation.navigate('FeedSelection');
   }
 
   renderModalContent() {
@@ -56,7 +62,12 @@ class AnimalListPage extends Component {
     if(selectedAnimalsList == "dog") list = dogList;
     
     return list.map(item => {
-      return <ListItem onPress={() => this.props.animalSelectionAction({ animal: {item} })}>
+      return <ListItem onPress={() => {
+        this.props.animalSelectionAction({ animal: {item} })
+        this.setState({ 
+          selected: true
+        });
+      }}>
         <Text>{item}</Text>
       </ListItem>
     })

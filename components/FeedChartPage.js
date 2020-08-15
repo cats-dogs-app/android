@@ -12,7 +12,7 @@ class FeedChartPage extends Component {
     super(props);
     this.state = { data:[20, 30, 10, 5, 20, 5, 20]};
 
-    if (!this.props.user.loggedIn) this.props.navigateTo({ page: 'Home' });
+    if (!this.props.user.loggedIn) this.props.navigation.navigate('Home');
   }
 
   renderChart() {
