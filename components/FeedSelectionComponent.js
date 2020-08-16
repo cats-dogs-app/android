@@ -21,7 +21,6 @@ class FeedSelectionComponent extends Component {
 	onValueChange(value) {
     let feed = this.props.user.animalFeed;
     delete feed[this.state.selectedFeed];
-    console.log(feed);
 		this.setState({
       selectedFeed: value
 		}, () => {
@@ -118,7 +117,7 @@ class FeedSelectionComponent extends Component {
 			
 const mapStateToProps = state => {
 	const user = state.user;
-	return { user };
+  return { user };
 };
 
 const mapDispatchToProps = dispatch => {

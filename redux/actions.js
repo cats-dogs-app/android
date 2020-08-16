@@ -92,8 +92,13 @@ export const animalCreationAction = ({ animal }) => (dispatch, getState) => {
     updates['/users/' + name + '/pets/' + type + '/' + animal] = {
       a : "asd"
     };
-
     firebase.database().ref().update(updates);
+    let list = user.selectedAnimalsList;
+    list.push(animal);
+    dispatch(changeSelection({
+      selection: type,
+      list
+    }));  
   } catch(err){
     dispatch(requestFailure(err));
   }
@@ -112,8 +117,6 @@ export const animalFeedSaveAction = ({ dailyFeeds }) => (dispatch, getState) => 
   const date = user.date;
   const animal = user.animalSelection;
   const name = user.username.split('@')[0];
-  console.log('/users/' + name + '/pets/' + type + '/' + animal + '/' + date + '/');
-  console.log(dailyFeeds);
   try {
     var updates = {};
     updates['/users/' + name + '/pets/' + type + '/' + animal + '/' + date + '/'] = dailyFeeds;

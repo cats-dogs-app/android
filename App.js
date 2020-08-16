@@ -14,10 +14,7 @@ export const UserStack = createStackNavigator(
     FeedChart: { screen: FeedChartPage },
     AnimalList: { screen: AnimalListPage },
   },
-  {    
-    navigationOptions: {
-      headerShown: false,
-    },
+  {
     initialRouteName: 'AnimalList'
   }
 );
@@ -27,13 +24,16 @@ export const AppStack = createStackNavigator(
     Login: { screen: LoginPage },
     Register: { screen: RegisterPage },
     Home: { screen: HomePage },
-    UserStack: { screen: UserStack },
-  },
-  {    
-    headerMode: 'none',
-    navigationOptions: {
-      headerShown: false,
+    UserStack: { 
+      screen: UserStack,
+      navigationOptions:  {
+        title: 'Home',
+        headerLeft: null,
+        // Android'de geri butonu ile çıkış yapmadan login sayfasına gelinebiliyor
+      } 
     },
+  },
+  {
     initialRouteName: 'Home'
   }
 );

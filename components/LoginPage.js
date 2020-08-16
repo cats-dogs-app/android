@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 import { loginRequest } from '../redux/actions';
 import styles from './styles';
 import WaitingPage from './WaitingPage';
+import { ImageBackground } from "react-native";
+import bg from "../assets/bg.jpg";
 
 class LoginPage extends Component {
 
@@ -20,21 +22,22 @@ class LoginPage extends Component {
   }
 
   renderLogin = () => 
-    <Container style={styles.whiteBackground}>
+    <ImageBackground source={bg} style={styles.backgroundImage} imageStyle= 
+        {{opacity:0.5}}>
       <Content style={styles.marginedContent}>
         <Content style={styles.inputItem}>
           {this.props.user.error && <Text style={styles.red20Text}>Failed to login, please check your inputs.</Text>}
           {!this.props.user.error && <Text style={styles.whitest20Text}>Login please.</Text>}
         </Content>
         <Form style={styles.marginedTop12}>
-          <Item style={styles.marginedContent2}>
+          <Item rounded style={styles.marginedContent2}>
             <Input style={styles.input}
               placeholderTextColor='#CCCAAF'
               placeholder='Username'
               value={this.state.username}
               onChangeText={(username) => this.setState({ username })} />
           </Item>
-          <Item style={styles.marginedContent2}>
+          <Item rounded style={styles.marginedContent2}>
             <Input style={styles.input}
               placeholderTextColor='#CCCAAF'
               placeholder='Password'
@@ -53,7 +56,7 @@ class LoginPage extends Component {
           </Button>
         </Content>
       </Content>
-    </Container>
+    </ImageBackground>
 
   render() {
     if (this.props.user.isLoading) return <WaitingPage />

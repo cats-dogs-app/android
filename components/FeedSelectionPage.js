@@ -70,22 +70,25 @@ class FeedSelectionPage extends Component {
 
 	renderDatePicker() {
     // const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-    return  <DatePicker
-			defaultDate={new Date()}
-			// maximumDate={new Date()}
-			locale={"en"}
-			timeZoneOffsetInMinutes={undefined}
-			modalTransparent={false}
-			animationType={"fade"}
-			androidMode={"default"}
-			placeHolderText="Tarih seçin"
-      textStyle={{ color: "green" }}
-      selected={this.state.date}
-			placeHolderTextStyle={{ color: "#d3d3d3" }}
-			onDateChange={this.onDateValueChange}
-      disabled={false}
-      // formatChosenDate={date => date.toLocaleDateString(options)}
-			/>
+    return <View style={styles.centered}>
+      <DatePicker
+        defaultDate={new Date()}
+        maximumDate={new Date()}
+        locale={"en"}
+        timeZoneOffsetInMinutes={undefined}
+        modalTransparent={false}
+        animationType={"fade"}
+        androidMode={"default"}
+        placeHolderText="Tarih seçin"
+        textStyle={{ color: "green" }}
+        selected={this.state.date}
+        placeHolderTextStyle={{ color: "#d3d3d3" }}
+        onDateChange={this.onDateValueChange}
+        disabled={false}
+        // formatChosenDate={date => date.toLocaleDateString(options)}
+        />
+      <Text style={styles.centered}>{this.state.date}</Text>
+    </View>
       // TODO: Date formatter
 	}
 

@@ -5,7 +5,7 @@ export default StyleSheet.create({
   backgroundImage: {
     flex: 1,
     resizeMode: "cover",
-    justifyContent: "center"
+    justifyContent: "center",
   },
 
   darkGrayBackground: { backgroundColor: '#666666' },
@@ -42,7 +42,9 @@ export default StyleSheet.create({
   marginedContent2: {
     marginLeft: 24,
     marginRight: 24,
-    height: 48
+    height: 48,
+    marginTop: 12,
+    backgroundColor: '#FFF',
   },
   
   marginedTop12: {
@@ -55,7 +57,7 @@ export default StyleSheet.create({
 
   input: {
     color: '#666666',
-    fontSize: 18
+    fontSize: 18,
   },
 
   roundButton: {
@@ -66,6 +68,12 @@ export default StyleSheet.create({
     width:80,
     height:80,
     borderRadius:50,
+  },
+
+  centered: {
+    flex: 1,
+    marginLeft: 'auto',
+    marginRight: 'auto'
   }
 
 });

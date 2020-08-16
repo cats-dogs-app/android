@@ -2,10 +2,9 @@ import { Button, Container, Content, Form, Input, Item, Label, List, ListItem, T
 import React, { Component } from 'react';
 import { Modal, TouchableOpacity } from 'react-native'; // CHANGE_HERE
 import { connect } from 'react-redux';
-import { animalCreationAction } from '../redux/actions';
+import { animalCreationAction, selectionChangeAction } from '../redux/actions';
 import FooterComponent from './FooterComponent';
 import styles from './styles';
-
 
 class AnimalListPage extends Component {
 
@@ -15,12 +14,17 @@ class AnimalListPage extends Component {
       visibleModal: false,
       animal: '',
 		};
-
     this.renderList = this.renderList.bind(this);
   }
 
   componentDidUpdate(){
-    if (!this.props.user.loggedIn) this.props.navigation.navigate('Home');
+    const { navigation, user } = this.props;
+    if (!user.loggedIn) navigation.navigate('Home');
+  }
+
+  componentDidMount(){
+    const { user } = this.props;
+    if (user.selectedAnimalsList.length === 0) this.props.selectionChangeAction({selection: user.selectedAnimals});
   }
 
   renderModalContent() {
@@ -51,7 +55,7 @@ class AnimalListPage extends Component {
   renderList() {
     const {selectedAnimalsList} = this.props.user;
     return selectedAnimalsList.map(item => 
-      <ListItem onPress={() => {
+      <ListItem key={item} onPress={() => {
         this.props.navigation.navigate('FeedSelection', { animal: item });
       }}>
         <Text>{item}</Text>
@@ -93,7 +97,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    animalCreationAction: content => {dispatch(animalCreationAction(content))}
+    animalCreationAction: content => {dispatch(animalCreationAction(content))},
+    selectionChangeAction: content => {dispatch(selectionChangeAction(content))},
   };
 };
 

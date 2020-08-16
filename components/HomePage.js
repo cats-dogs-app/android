@@ -1,9 +1,9 @@
 import { Button, Content, Text } from 'native-base';
 import React, { Component } from 'react';
-import { ImageBackground } from "react-native";
 import { connect } from 'react-redux';
 import styles from './styles';
 import WaitingPage from './WaitingPage';
+import { ImageBackground } from "react-native";
 import bg from "../assets/bg.jpg";
 
 class HomePage extends Component {
@@ -18,7 +18,8 @@ class HomePage extends Component {
   }
 
   renderHome = () => {
-    return <ImageBackground source={bg} style={styles.backgroundImage}>
+    return <ImageBackground source={bg} style={styles.backgroundImage} imageStyle= 
+      {{opacity:0.5}}>
       <Content style={styles.marginedContent}>
         <Content style={styles.marginedTop12}>
         <Button rounded style={styles.button} block onPress={() => this.props.navigation.navigate('Login')}>
@@ -31,6 +32,17 @@ class HomePage extends Component {
       </Content>
     </ImageBackground>
   }
+
+  static navigationOptions = {
+    headerTitle: <Text> slm </Text>,
+    headerRight: (
+      <Button
+        onPress={() => alert('This is a button!')}
+        title="Info"
+        color="#fff"
+      />
+    ),
+  };
 
   render() {
     if (this.props.user.isLoading) return <WaitingPage />
