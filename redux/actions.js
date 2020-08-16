@@ -112,8 +112,6 @@ export const animalFeedSaveAction = ({ dailyFeeds }) => (dispatch, getState) => 
   const date = user.date;
   const animal = user.animalSelection;
   const name = user.username.split('@')[0];
-  console.log('/users/' + name + '/pets/' + type + '/' + animal + '/' + date + '/');
-  console.log(dailyFeeds);
   try {
     var updates = {};
     updates['/users/' + name + '/pets/' + type + '/' + animal + '/' + date + '/'] = dailyFeeds;

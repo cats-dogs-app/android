@@ -2,6 +2,7 @@ import { Button, Container, Content, DatePicker, Text, View } from 'native-base'
 import React, { Component } from 'react';
 import Swiper from 'react-native-swiper';
 import { connect } from 'react-redux';
+import { formatDate } from './formatter';
 import { animalSelectionAction, animalFeedRequestAction, dateChangeAction, feedRequestAction } from '../redux/actions';
 import FeedSelectionComponent from './FeedSelectionComponent';
 import FooterComponent from './FooterComponent';
@@ -12,7 +13,7 @@ class FeedSelectionPage extends Component {
 
   constructor(props) {
     super(props);
-    const date = this.formatDate(new Date());
+    const date = formatDate(new Date());
     this.state = { 
       selected: 'key1',
       date: date
@@ -42,36 +43,43 @@ class FeedSelectionPage extends Component {
   }
 
   onDateValueChange(value) {
-    const date = this.formatDate(value);
+    const date = formatDate(value);
+    console.log(date)
     this.setState({ date });
     this.props.dateChangeAction({ date });    
   }
 
-  renderFeeds() {
+  renderSwipePages() {
     const animalFeed = this.props.user.animalFeed;
+    let appliedFeeds = Object.keys(animalFeed)
+    let sz = appliedFeeds.length
+    for (var i = 0; i < 3 - sz % 3; i++) {
+      appliedFeeds.push(-1)
+    }
+    return [...Array(appliedFeeds.length / 3).keys()].map((idx) => {
+      return (
+        <View style={{flex: 1, padding: 8}}>
+          {this.renderFeeds(animalFeed, appliedFeeds.slice(idx * 3, (idx + 1) * 3))}
+        </View>
+      )
+    })
+  }
+
+  renderFeeds(animalFeed, slicedFeeds) {
     return (
-      Object.keys(animalFeed).map(feed => 
-        <FeedSelectionComponent feed={feed} amount={animalFeed[feed]} />
+      slicedFeeds.map((feed, idx) =>
+        <FeedSelectionComponent
+            feed={feed == -1 ? '' : feed}
+            amount={feed == -1 ? 0 : animalFeed[feed]}
+        />
       )
     )
   }
 
-  formatDate(date) {
-    let d = new Date(date),
-        month = '' + (d.getMonth() + 1),
-        day = '' + d.getDate(),
-        year = d.getFullYear();
-
-    if (month.length < 2) month = '0' + month;
-    if (day.length < 2) day = '0' + day;
-
-    return [year, month, day].join('-');
-}
-
 	renderDatePicker() {
     // const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     return  <DatePicker
-			defaultDate={new Date()}
+			defaultDate={new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)}
 			// maximumDate={new Date()}
 			locale={"en"}
 			timeZoneOffsetInMinutes={undefined}
@@ -127,7 +135,7 @@ class FeedSelectionPage extends Component {
             height={320}
             loop={false}
           >
-          {this.renderFeeds()}
+          {this.renderSwipePages()}
         </Swiper>
 
           <View>

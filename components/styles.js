@@ -66,6 +66,16 @@ export default StyleSheet.create({
     width:80,
     height:80,
     borderRadius:50,
+  },
+
+  addButton: {
+    borderWidth:1,
+    borderColor: '#fff',
+    alignItems:'center',
+    justifyContent:'center',
+    width:45,
+    height:45,
+    borderRadius:30,
   }
 
 });
