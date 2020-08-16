@@ -43,15 +43,34 @@ class FeedSelectionPage extends Component {
 
   onDateValueChange(value) {
     const date = this.formatDate(value);
+    console.log(date)
     this.setState({ date });
     this.props.dateChangeAction({ date });    
   }
 
-  renderFeeds() {
+  renderSwipePages() {
     const animalFeed = this.props.user.animalFeed;
+    let appliedFeeds = Object.keys(animalFeed)
+    let sz = appliedFeeds.length
+    for (var i = 0; i < 3 - sz % 3; i++) {
+      appliedFeeds.push(-1)
+    }
+    return [...Array(appliedFeeds.length / 3).keys()].map((idx) => {
+      return (
+        <View style={{flex: 1, padding: 8}}>
+          {this.renderFeeds(animalFeed, appliedFeeds.slice(idx * 3, idx * 3 + 3))}
+        </View>
+      )
+    })
+  }
+
+  renderFeeds(animalFeed, slicedFeeds) {
     return (
-      Object.keys(animalFeed).map(feed => 
-        <FeedSelectionComponent feed={feed} amount={animalFeed[feed]} />
+      slicedFeeds.map((feed, idx) =>
+        <FeedSelectionComponent
+            feed={feed == -1 ? '' : feed}
+            amount={feed == -1? 0 : animalFeed[feed]}
+        />
       )
     )
   }
@@ -127,7 +146,7 @@ class FeedSelectionPage extends Component {
             height={320}
             loop={false}
           >
-          {this.renderFeeds()}
+          {this.renderSwipePages()}
         </Swiper>
 
           <View>
