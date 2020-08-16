@@ -8,14 +8,26 @@ import thunk from 'redux-thunk';
 import { AnimalListPage, HomePage, FeedChartPage, LoginPage, RegisterPage, WaitingPage, FeedSelectionPage } from './components/pages';
 import reducers from './redux/reducers';
 
+export const UserStack = createStackNavigator(
+  {
+    FeedSelection: { screen: FeedSelectionPage },
+    FeedChart: { screen: FeedChartPage },
+    AnimalList: { screen: AnimalListPage },
+  },
+  {    
+    navigationOptions: {
+      headerShown: false,
+    },
+    initialRouteName: 'AnimalList'
+  }
+);
+
 export const AppStack = createStackNavigator(
   {
     Login: { screen: LoginPage },
     Register: { screen: RegisterPage },
-    FeedSelection: { screen: FeedSelectionPage },
-    FeedChart: { screen: FeedChartPage },
-    AnimalList: { screen: AnimalListPage },
-    Home: { screen: HomePage }
+    Home: { screen: HomePage },
+    UserStack: { screen: UserStack },
   },
   {    
     headerMode: 'none',
@@ -25,7 +37,6 @@ export const AppStack = createStackNavigator(
     initialRouteName: 'Home'
   }
 );
-
 
 const AppContainer = createAppContainer(AppStack);
 const store = createStore(reducers, applyMiddleware(thunk));

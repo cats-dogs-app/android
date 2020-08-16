@@ -1,7 +1,7 @@
 import { Button, Col, Form, Grid, Input, Item, Label, Picker, Text, View, Right } from 'native-base';
 import React, { Component } from 'react';
 import { Modal, TouchableOpacity } from 'react-native'; // CHANGE_HERE
-import { feedSaveAction } from '../redux/actions';
+import { animalFeedSaveAction } from '../redux/actions';
 import { connect } from 'react-redux';
 import styles from './styles';
 import { _ } from 'lodash';
@@ -19,10 +19,18 @@ class FeedSelectionComponent extends Component {
 	}
 	
 	onValueChange(value) {
+    let feed = this.props.user.animalFeed;
+    delete feed[this.state.selectedFeed];
+    console.log(feed);
 		this.setState({
-			selectedFeed: value
-		});
-	}
+      selectedFeed: value
+		}, () => {
+      feed[this.state.selectedFeed] = this.state.amount;
+      this.props.animalFeedSaveAction({
+        dailyFeeds: feed
+      })
+    });
+  }
 	
 	renderModalContent() {
 		const selectedFeed = this.props.user.feed[this.state.selectedFeed];
@@ -47,9 +55,10 @@ class FeedSelectionComponent extends Component {
             this.setState({
 						  visibleModal: false
             })
-            this.props.feedSaveAction({
-              feed: this.state.selectedFeed, 
-              amount: this.state.amount 
+            let feed = this.props.user.animalFeed;
+            feed[this.state.selectedFeed] = this.state.amount;
+            this.props.animalFeedSaveAction({
+              dailyFeeds: feed
             })
           }}
 					style={[styles.greenBackground, {marginTop: 12}]}
@@ -114,7 +123,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
 	return {
-    feedSaveAction: content => {dispatch(feedSaveAction(content))}
+    animalFeedSaveAction: content => {dispatch(animalFeedSaveAction(content))},
   };
 };
 

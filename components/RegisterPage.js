@@ -10,7 +10,10 @@ class RegisterPage extends Component {
   constructor(props) {
     super(props);
     this.state = {};
-    if (this.props.user.loggedIn) this.props.navigation.navigate('AnimalList');
+  }
+
+  componentDidUpdate(){
+    if (this.props.user.loggedIn) this.props.navigation.navigate('UserStack');
   }
   
   renderRegister = () => 

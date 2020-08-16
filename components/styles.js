@@ -1,7 +1,13 @@
 import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
-    
+
+  backgroundImage: {
+    flex: 1,
+    resizeMode: "cover",
+    justifyContent: "center"
+  },
+
   darkGrayBackground: { backgroundColor: '#666666' },
   grayBackground: { backgroundColor: '#dadada' },
   greenBackground: { backgroundColor: '#00b738' },
@@ -30,7 +36,7 @@ export default StyleSheet.create({
   marginedContent: {
     marginLeft: 24,
     marginRight: 24,
-    marginTop: 66
+    marginTop: 24
   },
   
   marginedContent2: {

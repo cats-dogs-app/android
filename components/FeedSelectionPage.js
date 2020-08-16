@@ -2,7 +2,7 @@ import { Button, Container, Content, DatePicker, Text, View } from 'native-base'
 import React, { Component } from 'react';
 import Swiper from 'react-native-swiper';
 import { connect } from 'react-redux';
-import { dateChangeAction, feedRequestAction } from '../redux/actions';
+import { animalSelectionAction, animalFeedRequestAction, dateChangeAction, feedRequestAction } from '../redux/actions';
 import FeedSelectionComponent from './FeedSelectionComponent';
 import FooterComponent from './FooterComponent';
 import { WaitingPage } from './pages';
@@ -12,19 +12,25 @@ class FeedSelectionPage extends Component {
 
   constructor(props) {
     super(props);
+    const date = this.formatDate(new Date());
     this.state = { 
       selected: 'key1',
-      date: '' 
+      date: date
     };
 
     this.onDateValueChange = this.onDateValueChange.bind(this);
     this.onValueChange = this.onValueChange.bind(this);
+  }
 
+  componentDidUpdate(){
     if (!this.props.user.loggedIn) this.props.navigation.navigate('Home');
   }
 
   componentDidMount(){
-    if(Object.keys(this.props.user.feed).length === 0) {
+    const { user } = this.props;
+    this.props.animalSelectionAction({animal: this.props.navigation.state.params.animal});
+    this.props.dateChangeAction({ date: this.state.date });
+    if (Object.keys(user.feed).length === 0) {
       this.props.feedRequestAction();
     }
   }
@@ -42,13 +48,11 @@ class FeedSelectionPage extends Component {
   }
 
   renderFeeds() {
-    if (this.props.user.isLoading) return <WaitingPage />
-    else return (
-      <View style={{padding: 8}}>
-        <FeedSelectionComponent/>
-        <FeedSelectionComponent/>
-        <FeedSelectionComponent/>
-      </View>
+    const animalFeed = this.props.user.animalFeed;
+    return (
+      Object.keys(animalFeed).map(feed => 
+        <FeedSelectionComponent feed={feed} amount={animalFeed[feed]} />
+      )
     )
   }
 
@@ -67,15 +71,16 @@ class FeedSelectionPage extends Component {
 	renderDatePicker() {
     // const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     return  <DatePicker
-			defaultDate={new Date(2020, 8, 7)}
-			minimumDate={new Date(2020, 8, 7)}
+			defaultDate={new Date()}
+			// maximumDate={new Date()}
 			locale={"en"}
 			timeZoneOffsetInMinutes={undefined}
 			modalTransparent={false}
 			animationType={"fade"}
 			androidMode={"default"}
 			placeHolderText="Tarih seçin"
-			textStyle={{ color: "green" }}
+      textStyle={{ color: "green" }}
+      selected={this.state.date}
 			placeHolderTextStyle={{ color: "#d3d3d3" }}
 			onDateChange={this.onDateValueChange}
       disabled={false}
@@ -85,11 +90,13 @@ class FeedSelectionPage extends Component {
 	}
 
   render() {
+    const {user} = this.props;
+    if (user.isLoading) return <WaitingPage />
     return (
       <Container style={styles.lightBackground}>
         <Content style={styles.marginedContent}>
           <Button disabled rounded block style={styles.disabledButton}>
-            <Text style={styles.black}>İSİM</Text>
+            <Text style={styles.black}>{user.animalSelection}</Text>
           </Button>        
   				{this.renderDatePicker()}
           <Swiper
@@ -120,16 +127,7 @@ class FeedSelectionPage extends Component {
             height={320}
             loop={false}
           >
-          <View style={{flex: 1, padding: 8}}>
-            <FeedSelectionComponent/>
-            <FeedSelectionComponent/>
-            <FeedSelectionComponent/>    
-          </View>
-          <View style={{flex: 1, padding: 8}}>
-            <FeedSelectionComponent/>
-            <FeedSelectionComponent/>
-            <FeedSelectionComponent/>    
-          </View>
+          {this.renderFeeds()}
         </Swiper>
 
           <View>
@@ -154,8 +152,10 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
+    animalSelectionAction: content => {dispatch(animalSelectionAction(content))},
     dateChangeAction: content => {dispatch(dateChangeAction(content))},
-    feedRequestAction: () => {dispatch(feedRequestAction())}
+    feedRequestAction: () => {dispatch(feedRequestAction())},
+    animalFeedRequestAction: content => {dispatch(animalFeedRequestAction(content))},
   };
 };
 

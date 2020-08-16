@@ -1,4 +1,5 @@
 import { 
+  ANIMAL_FEED_REQUEST,
   ANIMAL_SELECTION, 
   CREATE_ANIMAL, 
   DATE_CHANGE, 
@@ -99,24 +100,50 @@ export const animalCreationAction = ({ animal }) => (dispatch, getState) => {
 }
 
 export const dateChangeAction = ({ date }) => dispatch => {
+  dispatch(requestStarted());
   dispatch(dateChange(date));
+  dispatch(animalFeedRequestAction());
 };
 
-export const feedSaveAction = ({ daily }) => (dispatch, getState) => {
+export const animalFeedSaveAction = ({ dailyFeeds }) => (dispatch, getState) => {
+  dispatch(requestStarted());
   let user = getState().user;
   const type = user.selectedAnimals;
   const date = user.date;
-  const animal = user.animalSelection.item;
+  const animal = user.animalSelection;
   const name = user.username.split('@')[0];
+  console.log('/users/' + name + '/pets/' + type + '/' + animal + '/' + date + '/');
+  console.log(dailyFeeds);
   try {
     var updates = {};
-    updates['/users/' + name + '/pets/' + type + '/' + animal + '/' + date + '/'] = {dailyFeeds};
+    updates['/users/' + name + '/pets/' + type + '/' + animal + '/' + date + '/'] = dailyFeeds;
 
     firebase.database().ref().update(updates);
+    dispatch(animalFeedRequest(dailyFeeds));
   } catch(err){
     dispatch(requestFailure(err));
   }
 }
+
+export const animalFeedRequestAction = () => (dispatch, getState) => {
+  dispatch(requestStarted());
+  let user = getState().user;
+  const type = user.selectedAnimals;
+  const date = user.date;
+  const animal = user.animalSelection;
+  const name = user.username.split('@')[0];
+
+  try {
+    db.ref('/users/' + name + '/pets/' + type + '/' + animal + '/' + date + '/').once('value').then(function(snapshot) {
+      dispatch(animalFeedRequest(snapshot.val() === null ? {} : snapshot.val()));
+    }).catch(error => {
+      dispatch(requestFailure(error));
+    });
+  } catch(err){
+    dispatch(requestFailure(err));
+  }
+    
+};
 
 export const feedRequestAction = () => dispatch => {
   dispatch(requestStarted());
@@ -176,6 +203,11 @@ const dateChange = content => ({
 
 const feedRequest = content => ({
   type: FEED_REQUEST,
+  payload: { content }
+});
+
+const animalFeedRequest = content => ({
+  type: ANIMAL_FEED_REQUEST,
   payload: { content }
 });
 

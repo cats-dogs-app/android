@@ -1,20 +1,24 @@
-import { Button, Container, Content, Text } from 'native-base';
+import { Button, Content, Text } from 'native-base';
 import React, { Component } from 'react';
+import { ImageBackground } from "react-native";
 import { connect } from 'react-redux';
-import { loginRequest, navigateTo, noLogin } from '../redux/actions';
 import styles from './styles';
 import WaitingPage from './WaitingPage';
+import bg from "../assets/bg.jpg";
 
-class LoginPage extends Component {
+class HomePage extends Component {
 
   constructor(props) {
     super(props);
     this.state = {};
-    if (this.props.user.loggedIn) this.props.navigation.navigate('FeedSelection');
   }
 
-  renderLogin = () => 
-    <Container style={styles.whiteBackground}>
+  componentDidUpdate(){
+    if (this.props.user.loggedIn) this.props.navigation.navigate('UserStack');
+  }
+
+  renderHome = () => {
+    return <ImageBackground source={bg} style={styles.backgroundImage}>
       <Content style={styles.marginedContent}>
         <Content style={styles.marginedTop12}>
         <Button rounded style={styles.button} block onPress={() => this.props.navigation.navigate('Login')}>
@@ -25,11 +29,12 @@ class LoginPage extends Component {
           </Button>
         </Content>
       </Content>
-    </Container>
+    </ImageBackground>
+  }
 
   render() {
     if (this.props.user.isLoading) return <WaitingPage />
-    else return this.renderLogin()
+    else return this.renderHome()
   }
 }
 
@@ -39,10 +44,7 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => {
-  return {
-    loginRequest: credentials => { dispatch(loginRequest(credentials)) },
-    noLogin: content => { dispatch(noLogin(content)) }
-  };
+  return {};
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(LoginPage);
+export default connect(mapStateToProps, mapDispatchToProps)(HomePage);

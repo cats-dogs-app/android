@@ -1,4 +1,16 @@
-import { ANIMAL_SELECTION, CREATE_ANIMAL, DATE_CHANGE, FEED_REQUEST, LOGIN_SUCCESS, LOGOUT_SUCCESS, REFRESH_ERRORS, REGISTER_SUCCESS, REQUEST_FAILURE, REQUEST_STARTED, SELECTION_CHANGE } from "../actionTypes";
+import { 
+  ANIMAL_FEED_REQUEST,
+  ANIMAL_SELECTION, 
+  CREATE_ANIMAL, 
+  DATE_CHANGE, 
+  FEED_REQUEST, 
+  LOGIN_SUCCESS, 
+  LOGOUT_SUCCESS, 
+  REFRESH_ERRORS, 
+  REGISTER_SUCCESS, 
+  REQUEST_FAILURE, 
+  REQUEST_STARTED, 
+  SELECTION_CHANGE } from "../actionTypes";
 
 const initialState = { 
   loggedIn: false, 
@@ -6,7 +18,9 @@ const initialState = {
   isLoading: false, 
   error: false, 
   feed: {},
-  selectedAnimalsList: []
+  selectedAnimalsList: [],
+  animalFeed: {},
+  selectedAnimals: 'cat',
 };
 
 const user = (state = initialState, action) => {
@@ -42,15 +56,17 @@ const user = (state = initialState, action) => {
       copyState.isLoading = true;
       return copyState;
     }
-    case SELECTION_CHANGE: {
+    case SELECTION_CHANGE: { // Hayvan türü seçme
       let copyState = { ...state };
       copyState.selectedAnimals = action.payload.content.selection;
       copyState.selectedAnimalsList = action.payload.content.list;
+      copyState.isLoading = false;
       return copyState;
     }
-    case ANIMAL_SELECTION: {
+    case ANIMAL_SELECTION: { // Hayvan seçme
       let copyState = { ...state };
       copyState.animalSelection = action.payload.content;
+      copyState.isLoading = false;
       return copyState;
     }
     case DATE_CHANGE: {
@@ -61,11 +77,19 @@ const user = (state = initialState, action) => {
     case FEED_REQUEST: {
       let copyState = { ...state };
       copyState.feed = action.payload.content;
+      copyState.isLoading = false;
       return copyState;
     }
     case CREATE_ANIMAL: {
       let copyState = { ...state };
       copyState[action.payload.content.type] = action.payload.content.animal;
+      copyState.isLoading = false;
+      return copyState;
+    }
+    case ANIMAL_FEED_REQUEST: { // Seçili hayvanın o günkü tükettiği mamalar
+      let copyState = { ...state };
+      copyState.animalFeed = action.payload.content;
+      copyState.isLoading = false;
       return copyState;
     }
     default: {

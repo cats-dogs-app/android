@@ -16,7 +16,7 @@ class LoginPage extends Component {
   }
 
   componentDidUpdate(){
-    if (this.props.user.loggedIn) this.props.navigation.navigate('AnimalList');
+    if (this.props.user.loggedIn) this.props.navigation.navigate('UserStack');
   }
 
   renderLogin = () => 

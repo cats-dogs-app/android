@@ -2,7 +2,6 @@ import { Button, Card, Container, Content, Text, View } from 'native-base';
 import React, { Component } from 'react';
 import { BarChart, Grid, ProgressCircle, XAxis, YAxis } from 'react-native-svg-charts';
 import { connect } from 'react-redux';
-import { dateChangeAction } from '../redux/actions';
 import FooterComponent from './FooterComponent';
 import styles from './styles';
 
@@ -11,7 +10,9 @@ class FeedChartPage extends Component {
   constructor(props) {
     super(props);
     this.state = { data:[20, 30, 10, 5, 20, 5, 20]};
+  }
 
+  componentDidUpdate(){
     if (!this.props.user.loggedIn) this.props.navigation.navigate('Home');
   }
 

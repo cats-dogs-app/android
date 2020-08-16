@@ -2,7 +2,7 @@ import { Button, Container, Content, Form, Input, Item, Label, List, ListItem, T
 import React, { Component } from 'react';
 import { Modal, TouchableOpacity } from 'react-native'; // CHANGE_HERE
 import { connect } from 'react-redux';
-import { animalCreationAction, animalSelectionAction } from '../redux/actions';
+import { animalCreationAction } from '../redux/actions';
 import FooterComponent from './FooterComponent';
 import styles from './styles';
 
@@ -14,16 +14,13 @@ class AnimalListPage extends Component {
 		this.state = { 
       visibleModal: false,
       animal: '',
-      selected: false
 		};
 
     this.renderList = this.renderList.bind(this);
-    if (!this.props.user.loggedIn) this.props.navigation.navigate('Home');
   }
 
-  componentDidUpdate(prevState){
-    const {selected} = this.state;
-    if (selected && !prevState.selected) this.props.navigation.navigate('FeedSelection');
+  componentDidUpdate(){
+    if (!this.props.user.loggedIn) this.props.navigation.navigate('Home');
   }
 
   renderModalContent() {
@@ -41,29 +38,25 @@ class AnimalListPage extends Component {
             this.setState({
               visibleModal: false
             });
-            this.props.animalCreationAction({animal: this.state.animal})
+            this.props.animalCreationAction({animal: this.state.animal});
           }}
 					style={[styles.greenBackground, {marginTop: 12}]}
 				>
 					<Text>Kaydet</Text>
 				</Button>
 			</Form>
-		)
+		);
   }
   
   renderList() {
     const {selectedAnimalsList} = this.props.user;
-    console.log(selectedAnimalsList);
-    return selectedAnimalsList.map(item => {
-      return <ListItem onPress={() => {
-        this.props.animalSelectionAction({ animal: {item} })
-        this.setState({ 
-          selected: true
-        });
+    return selectedAnimalsList.map(item => 
+      <ListItem onPress={() => {
+        this.props.navigation.navigate('FeedSelection', { animal: item });
       }}>
         <Text>{item}</Text>
       </ListItem>
-    })
+    )
   }
 
   render() {
@@ -100,7 +93,6 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    animalSelectionAction: content => {dispatch(animalSelectionAction(content))},
     animalCreationAction: content => {dispatch(animalCreationAction(content))}
   };
 };
