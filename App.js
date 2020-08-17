@@ -27,8 +27,7 @@ export const AppStack = createStackNavigator(
     UserStack: { 
       screen: UserStack,
       navigationOptions:  {
-        title: 'Home',
-        headerLeft: null,
+        header: null
         // Android'de geri butonu ile çıkış yapmadan login sayfasına gelinebiliyor
       } 
     },
