@@ -70,10 +70,21 @@ export default StyleSheet.create({
     borderRadius:50,
   },
 
+
   centered: {
     flex: 1,
     marginLeft: 'auto',
     marginRight: 'auto'
+  },
+
+  addButton: {
+    borderWidth:1,
+    borderColor: '#fff',
+    alignItems:'center',
+    justifyContent:'center',
+    width:45,
+    height:45,
+    borderRadius:30,
   }
 
 });

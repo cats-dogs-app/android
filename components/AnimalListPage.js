@@ -71,7 +71,7 @@ class AnimalListPage extends Component {
             {this.renderList()}
           </List>
           <TouchableOpacity
-            style={[styles.roundButton, styles.greenBackground]}
+            style={[styles.addButton, styles.greenBackground]}
             onPress={() => this.setState({
               visibleModal: true
             })}>

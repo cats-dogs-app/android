@@ -9,12 +9,12 @@ import { _ } from 'lodash';
 class FeedSelectionComponent extends Component {
 	
 	constructor(props) {
-		super(props);
-		this.state = { 
-			selectedFeed: 'key1',
+    super(props);
+		this.state = {
+			selectedFeed: props.feed,
 			visibleModal: false,
 			modalField: '',
-			amount: 0
+			amount: props.amount
 		};
 	}
 	
@@ -33,7 +33,7 @@ class FeedSelectionComponent extends Component {
 	
 	renderModalContent() {
 		const selectedFeed = this.props.user.feed[this.state.selectedFeed];
-		const calories = (this.state.amount/100)*_.values(selectedFeed)[0]; 
+    const calories = (this.state.amount)*_.values(selectedFeed)[0]; 
 		// Kalori hesabı
 		return (
 			<Form style={{margin: 30}}>
@@ -69,7 +69,7 @@ class FeedSelectionComponent extends Component {
 	}
 
 	renderFeeds() {
-		let { feed } = this.props.user;
+    let { feed } = this.props.user;
 		return _.map(feed, (value, key) => <Picker.Item 
 				label={key}
 				value={key}/>
