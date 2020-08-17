@@ -33,17 +33,6 @@ class HomePage extends Component {
     </ImageBackground>
   }
 
-  static navigationOptions = {
-    headerTitle: <Text> slm </Text>,
-    headerRight: (
-      <Button
-        onPress={() => alert('This is a button!')}
-        title="Info"
-        color="#fff"
-      />
-    ),
-  };
-
   render() {
     if (this.props.user.isLoading) return <WaitingPage />
     else return this.renderHome()
