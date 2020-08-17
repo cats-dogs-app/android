@@ -85,6 +85,9 @@ export default StyleSheet.create({
     width:45,
     height:45,
     borderRadius:30,
+    marginTop: 16,
+    marginRight: 16,
+    marginLeft: 'auto',
   }
 
 });

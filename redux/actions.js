@@ -2,6 +2,7 @@ import {
   ANIMAL_FEED_REQUEST,
   ANIMAL_SELECTION, 
   CREATE_ANIMAL, 
+  CUSTOM_FEED_REQUEST,
   DATE_CHANGE, 
   FEED_REQUEST, 
   LOGIN_SUCCESS, 
@@ -104,6 +105,37 @@ export const animalCreationAction = ({ animal }) => (dispatch, getState) => {
   }
 }
 
+export const customFeedRequestAction = () => (dispatch, getState) => {
+  dispatch(requestStarted());
+  let user = getState().user;
+  const name = user.username.split('@')[0];
+
+  try {
+    db.ref('/users/' + name + '/feed/').once('value').then(function(snapshot) {
+      dispatch(customFeedRequest(snapshot.val() === null ? {} : snapshot.val()));
+    }).catch(error => {
+      dispatch(requestFailure(error));
+    });
+  } catch(err){
+    dispatch(requestFailure(err));
+  }
+    
+};
+
+export const customFeedCreationAction = ({ feedList }) => (dispatch, getState) => {
+  const user = getState().user;
+  const name = user.username.split('@')[0];
+
+  try {
+    var updates = {};
+    updates['/users/' + name + '/feed/'] = feedList;
+    firebase.database().ref().update(updates);
+    dispatch(customFeedRequest(feedList));  
+  } catch(err){
+    dispatch(requestFailure(err));
+  }
+}
+
 export const dateChangeAction = ({ date }) => dispatch => {
   dispatch(requestStarted());
   dispatch(dateChange(date));
@@ -201,6 +233,11 @@ const animalSelection = content => ({
 
 const dateChange = content => ({
   type: DATE_CHANGE,
+  payload: { content }
+});
+
+const customFeedRequest = content => ({
+  type: CUSTOM_FEED_REQUEST,
   payload: { content }
 });
 

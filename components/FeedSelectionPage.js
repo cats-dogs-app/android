@@ -1,11 +1,20 @@
-import { Button, Container, Content, DatePicker, Text, View } from 'native-base';
+import { Button, Card, Content, DatePicker, Form, Input, Item, Label, Text, View } from 'native-base';
 import React, { Component } from 'react';
+import { ImageBackground, Modal, TouchableOpacity } from 'react-native';
 import Swiper from 'react-native-swiper';
 import { connect } from 'react-redux';
-import { formatDate } from './formatter';
-import { animalSelectionAction, animalFeedRequestAction, dateChangeAction, feedRequestAction } from '../redux/actions';
+import bg from "../assets/bg.jpg";
+import {
+  animalFeedRequestAction,
+  animalSelectionAction, 
+  customFeedCreationAction, 
+  customFeedRequestAction,
+  dateChangeAction,
+  feedRequestAction
+} from '../redux/actions';
 import FeedSelectionComponent from './FeedSelectionComponent';
 import FooterComponent from './FooterComponent';
+import { formatDate } from './formatter';
 import { WaitingPage } from './pages';
 import styles from './styles';
 
@@ -16,7 +25,10 @@ class FeedSelectionPage extends Component {
     const date = formatDate(new Date());
     this.state = { 
       selected: 'key1',
-      date: date
+      date: date,
+      visibleModal: false,
+      newFeedCal: 0,
+      newFeedName: '',
     };
 
     this.onDateValueChange = this.onDateValueChange.bind(this);
@@ -34,6 +46,7 @@ class FeedSelectionPage extends Component {
     if (Object.keys(user.feed).length === 0) {
       this.props.feedRequestAction();
     }
+    this.props.customFeedRequestAction();
   }
 
   onValueChange(value) {
@@ -44,7 +57,6 @@ class FeedSelectionPage extends Component {
 
   onDateValueChange(value) {
     const date = formatDate(value);
-    console.log(date)
     this.setState({ date });
     this.props.dateChangeAction({ date });    
   }
@@ -78,38 +90,87 @@ class FeedSelectionPage extends Component {
 
 	renderDatePicker() {
     // const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-    return  <DatePicker
-			defaultDate={new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)}
-			// maximumDate={new Date()}
-			locale={"en"}
-			timeZoneOffsetInMinutes={undefined}
-			modalTransparent={false}
-			animationType={"fade"}
-			androidMode={"default"}
-			placeHolderText="Tarih seçin"
-      textStyle={{ color: "green" }}
-      selected={this.state.date}
-			placeHolderTextStyle={{ color: "#d3d3d3" }}
-			onDateChange={this.onDateValueChange}
-      disabled={false}
-      // formatChosenDate={date => date.toLocaleDateString(options)}
-			/>
+    return  <View style={styles.centered}>
+      <DatePicker
+        defaultDate={new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)}
+        maximumDate={new Date()}
+        locale={"en"}
+        timeZoneOffsetInMinutes={undefined}
+        modalTransparent={false}
+        animationType={"fade"}
+        androidMode={"default"}
+        placeHolderText="Tarih seçin"
+        textStyle={{ color: "green" }}
+        selected={this.state.date}
+        placeHolderTextStyle={{ color: "#d3d3d3" }}
+        onDateChange={this.onDateValueChange}
+        disabled={false}
+        // formatChosenDate={date => date.toLocaleDateString(options)}
+        />
+    <Text style={styles.centered}>{this.state.date}</Text>
+  </View>
       // TODO: Date formatter
+  }
+  
+  renderFeedCreationModalContent() {
+    // Kalori hesabı
+		return (
+			<Form style={{margin: 30}}>
+				<Label style={{marginBottom: 8}}>
+					Mama ismi
+				</Label>
+				<Item style={{marginBottom: 8}} rounded>
+					<Input 
+						defaultValue={this.state.newFeedName}
+						onChangeText={text => this.setState({newFeedName: text})}
+					/>
+				</Item>
+				<Label style={{marginBottom: 8}}>
+					Gram başına düşen kalori miktarı
+				</Label>
+				<Item style={{marginBottom: 8}} rounded>
+					<Input 
+						defaultValue={this.state.newFeedCal}
+						onChangeText={text => this.setState({newFeedCal: parseFloat(text)})}
+						keyboardType="number-pad"
+          />
+				</Item>
+				<Button
+					onPress={() => {
+            this.setState({
+						  visibleModal: false
+            });
+            let list = this.props.user.customFeed;
+            list[this.state.newFeedName] = {
+              cal: this.state.newFeedCal,
+            };
+            this.props.customFeedCreationAction({
+              feedList: list
+            });
+          }}
+					style={[styles.greenBackground, {marginTop: 12}]}
+				>
+					<Text>Kaydet</Text>
+				</Button>
+			</Form>
+		)
 	}
 
   render() {
     const {user} = this.props;
     if (user.isLoading) return <WaitingPage />
     return (
-      <Container style={styles.lightBackground}>
-        <Content style={styles.marginedContent}>
-          <Button disabled rounded block style={styles.disabledButton}>
-            <Text style={styles.black}>{user.animalSelection}</Text>
-          </Button>        
-  				{this.renderDatePicker()}
-          <Swiper
-            dot={
-              <View
+      <ImageBackground source={bg} style={styles.backgroundImage} imageStyle= 
+      {{opacity:0.5}}>
+        <Content>
+          <Card style={[styles.marginedContent, {paddingTop: 12, paddingBottom: 24}]}>
+            <Button disabled rounded block style={styles.disabledButton}>
+              <Text style={styles.black}>{user.animalSelection}</Text>
+            </Button>        
+            {this.renderDatePicker()}
+            <Swiper
+              dot={
+                <View
                 style={{
                   backgroundColor: '#aaa',
                   width: 8,
@@ -118,26 +179,32 @@ class FeedSelectionPage extends Component {
                   marginLeft: 7,
                   marginRight: 7
                 }}
-              />
-            }
-            activeDot={
-              <View
+                />
+              }
+              activeDot={
+                <View
                 style={{
                   backgroundColor: '#777',
                   width: 8,
-                  height: 8,
-                  borderRadius: 7,
-                  marginLeft: 7,
-                  marginRight: 7
-                }}
-              />
-            }
-            height={320}
-            loop={false}
-          >
-          {this.renderSwipePages()}
-        </Swiper>
-
+                    height: 8,
+                    borderRadius: 7,
+                    marginLeft: 7,
+                    marginRight: 7
+                  }}
+                />
+              }
+              height={320}
+              loop={false}
+              >
+            {this.renderSwipePages()}
+          </Swiper>
+          <TouchableOpacity
+            style={[styles.addButton, styles.greenBackground]}
+            onPress={() => this.setState({
+              visibleModal: true
+            })}>
+            <Text style={styles.white}>+</Text>
+          </TouchableOpacity>
           <View>
             <Button rounded block style={styles.button} onPress={() => this.props.navigation.navigate('FeedChart')}>
               <Text>DEĞİŞİM GRAFİĞİ</Text>
@@ -146,9 +213,16 @@ class FeedSelectionPage extends Component {
               <Text style={styles.black}>Grafiği görebilmek için 7 günlük veri girilmelidir.</Text>
             </Button>
           </View>
+        </Card>
         </Content>
+        <Modal
+          transparent={false}
+          visible={this.state.visibleModal}
+          animationType="slide">
+          {this.renderFeedCreationModalContent()}
+        </Modal>
         <FooterComponent />
-      </Container>
+      </ImageBackground>
     )
   }
 }
@@ -162,6 +236,8 @@ const mapDispatchToProps = dispatch => {
   return {
     animalSelectionAction: content => {dispatch(animalSelectionAction(content))},
     dateChangeAction: content => {dispatch(dateChangeAction(content))},
+    customFeedCreationAction: content => {dispatch(customFeedCreationAction(content))},
+    customFeedRequestAction: content => {dispatch(customFeedRequestAction(content))},
     feedRequestAction: () => {dispatch(feedRequestAction())},
     animalFeedRequestAction: content => {dispatch(animalFeedRequestAction(content))},
   };

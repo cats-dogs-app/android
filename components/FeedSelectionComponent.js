@@ -32,7 +32,8 @@ class FeedSelectionComponent extends Component {
   }
 	
 	renderModalContent() {
-		const selectedFeed = this.props.user.feed[this.state.selectedFeed];
+    let { feed, customFeed } = this.props.user;
+		const selectedFeed = {...feed, ...customFeed}[this.state.selectedFeed];
     const calories = (this.state.amount)*_.values(selectedFeed)[0]; 
 		// Kalori hesabı
 		return (
@@ -69,10 +70,11 @@ class FeedSelectionComponent extends Component {
 	}
 
 	renderFeeds() {
-    let { feed } = this.props.user;
-		return _.map(feed, (value, key) => <Picker.Item 
+    let { feed, customFeed } = this.props.user;
+		return (
+      _.map({...feed, ...customFeed}, (value, key) => <Picker.Item 
 				label={key}
-				value={key}/>
+				value={key}/>)
 		)
   }
 			

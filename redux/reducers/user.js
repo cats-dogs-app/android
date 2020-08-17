@@ -10,7 +10,8 @@ import {
   REGISTER_SUCCESS, 
   REQUEST_FAILURE, 
   REQUEST_STARTED, 
-  SELECTION_CHANGE } from "../actionTypes";
+  SELECTION_CHANGE,
+  CUSTOM_FEED_REQUEST } from "../actionTypes";
 
 const initialState = { 
   loggedIn: false, 
@@ -91,6 +92,12 @@ const user = (state = initialState, action) => {
       copyState.animalFeed = action.payload.content;
       copyState.isLoading = false;
       return copyState;
+    }
+    case CUSTOM_FEED_REQUEST: {
+      let copyState = { ...state };
+      copyState.customFeed = action.payload.content;
+      copyState.isLoading = false;
+      return copyState;  
     }
     default: {
       return state;

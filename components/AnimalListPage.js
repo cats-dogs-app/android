@@ -1,7 +1,8 @@
-import { Button, Container, Content, Form, Input, Item, Label, List, ListItem, Text } from 'native-base';
+import { Button, Card, Content, Form, Input, Item, Label, List, ListItem, Text } from 'native-base';
 import React, { Component } from 'react';
-import { Modal, TouchableOpacity } from 'react-native'; // CHANGE_HERE
+import { ImageBackground, Modal, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
+import bg from "../assets/bg.jpg";
 import { animalCreationAction, selectionChangeAction } from '../redux/actions';
 import FooterComponent from './FooterComponent';
 import styles from './styles';
@@ -65,11 +66,14 @@ class AnimalListPage extends Component {
 
   render() {
     return (
-      <Container style={styles.lightBackground}>
+      <ImageBackground source={bg} style={styles.backgroundImage} imageStyle= 
+      {{opacity:0.5}}>
         <Content style={styles.marginedContent}>
-          <List>
-            {this.renderList()}
-          </List>
+          <Card style={{paddingTop: 12, paddingBottom: 24}}>
+            <List>
+              {this.renderList()}
+            </List>
+          </Card>
           <TouchableOpacity
             style={[styles.addButton, styles.greenBackground]}
             onPress={() => this.setState({
@@ -77,15 +81,15 @@ class AnimalListPage extends Component {
             })}>
             <Text style={styles.white}>+</Text>
           </TouchableOpacity>
-          <Modal
-            transparent={false}
-            visible={this.state.visibleModal}
-            animationType="slide">
-            {this.renderModalContent()}
-          </Modal>
         </Content>
+        <Modal
+          transparent={false}
+          visible={this.state.visibleModal}
+          animationType="slide">
+          {this.renderModalContent()}
+        </Modal>
         <FooterComponent />
-      </Container>
+    </ImageBackground>
     )
   }
 }

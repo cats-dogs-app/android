@@ -7,6 +7,8 @@ import FooterComponent from './FooterComponent';
 import { db } from '../redux/firebase'
 import styles from './styles';
 import { _ } from 'lodash';
+import { ImageBackground } from "react-native";
+import bg from "../assets/bg.jpg";
 
 
 class FeedChartPage extends Component {
@@ -24,7 +26,7 @@ class FeedChartPage extends Component {
 
   async getDailyAmount(date, chartData) {
     const user = this.props.user
-    const allFeed = user.feed
+    const allFeed = {...user.feed, ...user.customFeed};
     const type = user.selectedAnimals;
     const animal = user.animalSelection;
     const name = user.username.split('@')[0];
@@ -46,7 +48,6 @@ class FeedChartPage extends Component {
     } catch (error) {
       console.log(error)
     }
-    console.log(this.props)
   }
 
   async calculateChartData() {
@@ -67,7 +68,7 @@ class FeedChartPage extends Component {
 
   renderChart() {
     return (
-        <Card>
+        <View>
             <View style={{ flexDirection: 'column' }}>
                 <View style={{ height: 200, flexDirection: 'row' }}>
                     <YAxis
@@ -97,28 +98,31 @@ class FeedChartPage extends Component {
                     svg={{ fontSize: 10, fill: '#00b738' }}
                 />
             </View>
-        </Card>
+        </View>
     )
   }
 
   render() {
     return (
-      <Container style={styles.lightBackground}>
+      <ImageBackground source={bg} style={styles.backgroundImage} imageStyle= 
+      {{opacity:0.5}}>
         <Content style={styles.marginedContent}>
-          {this.renderChart()}
-          <Button disabled rounded block style={styles.disabledButton}>
-            <Text style={styles.black}>HAFTALIK DEĞİŞİM</Text>
-          </Button>
-          <ProgressCircle style={{ height: 200, margin: 24 }} progress={0.7} progressColor={'#00b738'} strokeWidth={15} />
-          <Button rounded block style={styles.button} onPress={() => this.props.navigateTo({page: 'FeedChart'})}>
-            <Text>PREMİUM'A KATIL</Text>
-          </Button>
-          <Button disabled rounded block style={styles.disabledButton}>
-            <Text style={styles.black}>SONRAKİ HAFTALAR İÇİN ÜYELİK GEREKMEKTEDİR.</Text>
-          </Button>
+          <Card style={{paddingTop: 12, paddingBottom: 24}}>
+            {this.renderChart()}
+            <Button disabled rounded block style={styles.disabledButton}>
+              <Text style={styles.black}>HAFTALIK DEĞİŞİM</Text>
+            </Button>
+            <ProgressCircle style={{ height: 200, margin: 24 }} progress={0.7} progressColor={'#00b738'} strokeWidth={15} />
+            <Button rounded block style={styles.button} onPress={() => this.props.navigateTo({page: 'FeedChart'})}>
+              <Text>PREMİUM'A KATIL</Text>
+            </Button>
+            <Button disabled rounded block style={styles.disabledButton}>
+              <Text style={styles.black}>SONRAKİ HAFTALAR İÇİN ÜYELİK GEREKMEKTEDİR.</Text>
+            </Button>
+          </Card>
         </Content>
         <FooterComponent />
-      </Container>
+      </ImageBackground>
     )
   }
 }
