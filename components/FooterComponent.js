@@ -1,9 +1,12 @@
 import { Button, Footer, FooterTab, Icon, Text } from 'native-base';
+import { Image } from "react-native";
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { logoutRequest, selectionChangeAction} from '../redux/actions';
 import styles from './styles';
 import { withNavigation } from 'react-navigation';
+import tabCat from "../assets/tabCat.png";
+import tabDog from "../assets/tabDog.png";
 
 class FooterComponent extends Component {
 
@@ -25,7 +28,10 @@ class FooterComponent extends Component {
               this.setState({ page: 'list'});
             }}
           >
-            <Icon style={styles.white} name="cat" />
+            <Image
+              style={styles.footerTab}
+              source={tabCat}
+            />
             <Text style={styles.white}>Kediler</Text>
           </Button>
           <Button vertical 
@@ -34,7 +40,10 @@ class FooterComponent extends Component {
               this.setState({ page: 'list'});
             }}
           >
-            <Icon style={styles.white} name="dog" />
+            <Image
+              style={styles.footerTab}
+              source={tabDog}
+            />
             <Text style={styles.white}>Köpekler</Text>
           </Button>
           <Button vertical 

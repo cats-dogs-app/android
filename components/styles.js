@@ -19,6 +19,11 @@ export default StyleSheet.create({
   black: { color: '#000' },
   white: { color: '#fff' },
 
+  footerTab: {
+    width: 30,
+    height: 30,
+  },
+
   button: {
     backgroundColor: '#00b738',
     marginLeft: 16,
@@ -69,7 +74,6 @@ export default StyleSheet.create({
     height:80,
     borderRadius:50,
   },
-
 
   centered: {
     flex: 1,
