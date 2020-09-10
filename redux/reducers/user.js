@@ -17,6 +17,7 @@ const initialState = {
   loggedIn: false, 
   content: {}, 
   isLoading: false, 
+  isRegistered: false,
   error: false, 
   feed: {},
   selectedAnimalsList: [],
@@ -43,6 +44,7 @@ const user = (state = initialState, action) => {
     }
     case REGISTER_SUCCESS: {
       let copyState = { ...state };
+      copyState.isRegistered = true;
       copyState.isLoading = false;
       return copyState;
     }

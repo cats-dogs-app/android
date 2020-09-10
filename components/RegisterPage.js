@@ -24,13 +24,14 @@ class RegisterPage extends Component {
       <Content style={styles.marginedContent}>
         <Content style={styles.inputItem}>
           {this.props.user.error && <Text style={styles.red20Text}>Failed to register, please check your inputs.</Text>}
-          {!this.props.user.error && <Text style={styles.whitest20Text}>Register please.</Text>}
+          {!this.props.user.error && !this.props.user.isRegistered && <Text style={styles.whitest20Text}>Register please.</Text>}
+          {this.props.user.isRegistered && <Text style={styles.red20Text}>Please login using new account.</Text>}
         </Content>
         <Form style={styles.marginedTop12}>
           <Item rounded style={styles.marginedContent2}>
             <Input style={styles.input}
               placeholderTextColor='#CCCAAF'
-              placeholder='Username'
+              placeholder='Email'
               value={this.state.username}
               onChangeText={(username) => this.setState({ username })} />
           </Item>
@@ -45,7 +46,7 @@ class RegisterPage extends Component {
           <Item rounded style={styles.marginedContent2} >
             <Input style={styles.input}
               placeholderTextColor='#CCCAAF'
-              placeholder='E-Mail'
+              placeholder='Username'
               value={this.state.email}
               onChangeText={(email) => this.setState({ email })} />
           </Item>

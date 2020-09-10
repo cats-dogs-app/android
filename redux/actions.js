@@ -16,19 +16,14 @@ import { db, firebase } from './firebase';
 
 export const loginRequest = ({ username, password }) => dispatch => {
   dispatch(requestStarted());
-  if(username=='a'){
-    dispatch(loginSuccess(username));
-  }
-  else {
-    try {
-      firebase.auth().signInWithEmailAndPassword(username, password).then(() => {
-        dispatch(loginSuccess(username));
-        }).catch(error => {
-          dispatch(requestFailure(error));
-        });
-    } catch(err){
-      dispatch(requestFailure(err));
-    }
+  try {
+    firebase.auth().signInWithEmailAndPassword(username, password).then(() => {
+      dispatch(loginSuccess(username));
+      }).catch(error => {
+        dispatch(requestFailure(error));
+      });
+  } catch(err){
+    dispatch(requestFailure(err));
   }
 
 };
